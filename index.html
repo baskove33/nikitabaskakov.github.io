@@ -65,7 +65,8 @@
                 linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
                 url('https://res.cloudinary.com/dt79npeea/image/upload/v1764843336/photo_2025-12-04_13-05-55_pwtepu.jpg');
             background-size: cover;
-            background-position: center;
+            /* ИСПРАВЛЕНИЕ: Сдвигаем фокус изображения на 20% вниз */
+            background-position: center 20%;
         }
         
     </style>
@@ -96,170 +97,175 @@
         </div>
 
         <!-- Правая часть (Контент) - 50% ШИРИНЫ НА LG: -->
-        <div class="lg:w-1/2 max-w-full lg:h-screen lg:overflow-y-auto p-4 sm:p-10 lg:p-12 space-y-5"> <!-- 20px space-y -->
-
-            <!-- 1. Информационная карточка (с анимацией) -->
-            <div class="bg-white shadow-2xl p-5 reveal-on-scroll"> <!-- 20px padding -->
-                <!-- РАЗМЕР ШРИФТА H1: 36px -->
-                <h1 class="text-[36px] font-medium text-gray-900 tracking-custom-tight mb-2 leading-none">Баскаков Никита</h1> 
-                <p class="text-base text-gray-600 mb-20 font-light">Портфолио веб-дизайнера</p>
-                <p class="text-sm text-gray-400 leading-relaxed">и просто хорошего человека</p>
-            </div>
-
-            <!-- 2. Карточка с опытом (с анимацией) -->
-            <div class="bg-white shadow-lg p-5 flex justify-between items-center reveal-on-scroll"> <!-- 20px padding -->
-                <span class="text-sm text-gray-600">Опыт:</span>
-                <span class="text-xl font-medium text-gray-900"> +4 года</span>
-            </div>
-
-            <!-- Заголовок портфолио -->
-            <div id="portfolio-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll"> <!-- 20px padding top/bottom -->
-                <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Портфолио</h2>
-            </div>
-
-            <!-- 3. Проекты портфолио -->
-            <div class="grid gap-5"> <!-- 20px gap -->
-                <!-- Проект 1: DYOR 5 (с анимацией) -->
-                <a href="#" class="portfolio-item project-1 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
-                    <div class="project-image w-full h-80 flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842242/Rectangle_39524_y5ycpn.png" 
-                             alt="Скриншот проекта DYOR 5" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
-                        <div class="text-lg font-medium text-gray-900 tracking-custom-tight">DYOR 5</div>
-                        <div class="text-right text-xs text-gray-500 tracking-wider uppercase">UI Design / Web Design / Brand Design</div>
-                    </div>
-                </a>
-
-                <!-- Проект 2: Nu i Che (с анимацией) -->
-                <a href="#" class="portfolio-item project-2 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
-                    <div class="project-image w-full h-80 flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39518_rwxdzz.png" 
-                             alt="Скриншот проекта Nu i Che" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
-                        <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Nu i Che</div>
-                        <div class="text-right text-xs text-gray-500 tracking-wider uppercase">Web Design</div>
-                    </div>
-                </a>
-
-                <!-- Проект 3: Nobee (с анимацией) -->
-                <a href="#" class="portfolio-item project-3 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
-                    <div class="project-image w-full h-80 flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39521_ck13rv.png" 
-                             alt="Скриншот проекта Nobee" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
-                        <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Nobee</div>
-                        <div class="text-right text-xs text-gray-500 tracking-wider uppercase">Web Design</div>
-                    </div>
-                </a>
-
-                <!-- Проект 4: 9 circles of Hell (с анимацией) -->
-                <a href="#" class="portfolio-item project-4 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
-                    <div class="project-image w-full h-80 flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" 
-                             alt="Скриншот проекта 9 circles of Hell" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
-                        <div class="text-lg font-medium text-gray-900 tracking-custom-tight">9 circles of Hell</div>
-                        <div class="text-right text-xs text-gray-500 tracking-wider uppercase">Longread</div>
-                    </div>
-                </a>
-
-                <!-- Проект 5: Din Drone (с анимацией) -->
-                <a href="#" class="portfolio-item project-5 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
-                    <div class="project-image w-full h-80 flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" 
-                             alt="Скриншот проекта Din Drone" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
-                        <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Din Drone</div>
-                        <div class="text-right text-xs text-gray-500 tracking-wider uppercase">UI Design / 3D</div>
-                    </div>
-                </a>
-                
-                <!-- Проект 6: Turbofish (с анимацией) -->
-                <a href="#" class="portfolio-item project-6 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
-                    <div class="project-image w-full h-80 flex items-center justify-center">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39520_j4cgl1.png" 
-                             alt="Скриншот проекта Turbofish" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
-                        <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Turbofish</div>
-                        <div class="text-right text-xs text-gray-500 tracking-wider uppercase">UX Design / UI Design / E-commerce</div>
-                    </div>
-                </a>
-
-            </div>
-
-            <!-- Заголовок стоимости -->
-            <div id="pricing-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll"> <!-- 20px padding top/bottom -->
-                <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Стоимость</h2>
-            </div>
-
-            <div class="space-y-5"> <!-- 20px space-y -->
-                <!-- Дизайн сайта (Figma) (с анимацией) -->
-                <div class="bg-white shadow-xl p-5 reveal-on-scroll"> <!-- 20px padding -->
-                    <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Дизайн сайта (Figma)</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed mb-8">Одностраничный сайт, промо-страница, посадочная страница для продукта или услуги. Только дизайн - без сборки.</p>
-                    
-                    <div class="flex flex-col space-y-4">
-                        <div class="bg-gray-100 p-4 flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Лендинг</span>
-                            <span class="text-3xl font-medium text-gray-900"> $450</span>
-                        </div>
-                        <div class="bg-gray-100 p-4 flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Многостраничный сайт</span>
-                            <span class="text-3xl font-medium text-gray-900"> $650</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Сайт под ключ (Figma + Tilda) (с анимацией) -->
-                <div class="bg-white shadow-xl p-5 reveal-on-scroll"> <!-- 20px padding -->
-                    <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Сайт под ключ (Figma + Tilda)</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed mb-8">Одностраничный сайт, промо-страница, посадочная страница для продукта или услуги. Полный цикл: дизайн и сборка.</p>
-                    
-                    <div class="flex flex-col space-y-4">
-                        <div class="bg-gray-100 p-4 flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Лендинг</span>
-                            <span class="text-3xl font-medium text-gray-900"> от $550</span>
-                        </div>
-                        <div class="bg-gray-100 p-4 flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Многостраничный сайт</span>
-                            <span class="text-3xl font-medium text-gray-900"> от $850</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Другие продукты (с анимацией) -->
-                <div class="bg-white shadow-xl p-5 reveal-on-scroll"> <!-- 20px padding -->
-                    <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Другие продукты?</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed mb-8">Графические задачи, не связанные напрямую с сайтами: баннеры, презентации, соцсети и другое. Обсудим задачу и предложу решение.</p>
-                    
-                    <div class="flex flex-col space-y-4">
-                        <div class="bg-gray-100 p-4 flex justify-between items-center">
-                            <span class="text-sm text-gray-600">По договоренности</span>
-                            <span class="text-3xl font-medium text-gray-900"> от $50</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Кнопка заказа - Ссылка на Telegram (с анимацией) -->
-            <a href="https://t.me/zorochik" target="_blank" class="block pb-5 reveal-on-scroll"> <!-- 20px padding bottom -->
-                <button class="w-full bg-white text-black text-lg font-medium py-6 shadow-xl mt-4 transition duration-300 hover:bg-gray-200 rounded-none">
-                    Заказать сайт
-                </button>
-            </a>
+        <!-- НОВЫЙ ВНЕШНИЙ КОНТЕЙНЕР ДЛЯ ЦЕНТРИРОВАНИЯ -->
+        <div class="lg:w-1/2 max-w-full lg:h-screen lg:overflow-y-auto p-4 sm:p-10 lg:p-12 flex justify-center"> 
             
+            <!-- Внутренний контейнер с ограничением ширины и автоматическими отступами по горизонтали -->
+            <div class="w-full lg:max-w-[365px] space-y-5"> 
+
+                <!-- 1. Информационная карточка (с анимацией) -->
+                <div class="bg-white shadow-2xl p-5 reveal-on-scroll"> <!-- 20px padding -->
+                    <!-- РАЗМЕР ШРИФТА H1: 36px -->
+                    <h1 class="text-[36px] font-medium text-gray-900 tracking-custom-tight mb-2 leading-none">Баскаков Никита</h1> 
+                    <p class="text-base text-gray-600 mb-20 font-light">Портфолио веб-дизайнера</p>
+                    <p class="text-sm text-gray-400 leading-relaxed">и просто хорошего человека</p>
+                </div>
+
+                <!-- 2. Карточка с опытом (с анимацией) -->
+                <div class="bg-white shadow-lg p-5 flex justify-between items-center reveal-on-scroll"> <!-- 20px padding -->
+                    <span class="text-sm text-gray-600">Опыт:</span>
+                    <span class="text-xl font-medium text-gray-900"> +4 года</span>
+                </div>
+
+                <!-- Заголовок портфолио -->
+                <div id="portfolio-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll"> <!-- 20px padding top/bottom -->
+                    <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Портфолио</h2>
+                </div>
+
+                <!-- 3. Проекты портфолио -->
+                <div class="grid gap-5"> <!-- 20px gap -->
+                    <!-- Проект 1: DYOR 5 (с анимацией) -->
+                    <a href="#" class="portfolio-item project-1 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
+                        <div class="project-image w-full h-80 flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842242/Rectangle_39524_y5ycpn.png" 
+                                 alt="Скриншот проекта DYOR 5" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
+                            <div class="text-lg font-medium text-gray-900 tracking-custom-tight">DYOR 5</div>
+                            <div class="text-right text-xs text-gray-500 tracking-wider uppercase">UI Design / Web Design / Brand Design</div>
+                        </div>
+                    </a>
+
+                    <!-- Проект 2: Nu i Che (с анимацией) -->
+                    <a href="#" class="portfolio-item project-2 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
+                        <div class="project-image w-full h-80 flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39518_rwxdzz.png" 
+                                 alt="Скриншот проекта Nu i Che" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
+                            <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Nu i Che</div>
+                            <div class="text-right text-xs text-gray-500 tracking-wider uppercase">Web Design</div>
+                        </div>
+                    </a>
+
+                    <!-- Проект 3: Nobee (с анимацией) -->
+                    <a href="#" class="portfolio-item project-3 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
+                        <div class="project-image w-full h-80 flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39521_ck13rv.png" 
+                                 alt="Скриншот проекта Nobee" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
+                            <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Nobee</div>
+                            <div class="text-right text-xs text-gray-500 tracking-wider uppercase">Web Design</div>
+                        </div>
+                    </a>
+
+                    <!-- Проект 4: 9 circles of Hell (с анимацией) -->
+                    <a href="#" class="portfolio-item project-4 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
+                        <div class="project-image w-full h-80 flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" 
+                                 alt="Скриншот проекта 9 circles of Hell" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
+                            <div class="text-lg font-medium text-gray-900 tracking-custom-tight">9 circles of Hell</div>
+                            <div class="text-right text-xs text-gray-500 tracking-wider uppercase">Longread</div>
+                        </div>
+                    </a>
+
+                    <!-- Проект 5: Din Drone (с анимацией) -->
+                    <a href="#" class="portfolio-item project-5 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
+                        <div class="project-image w-full h-80 flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" 
+                                 alt="Скриншот проекта Din Drone" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
+                            <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Din Drone</div>
+                            <div class="text-right text-xs text-gray-500 tracking-wider uppercase">UI Design / 3D</div>
+                        </div>
+                    </a>
+                    
+                    <!-- Проект 6: Turbofish (с анимацией) -->
+                    <a href="#" class="portfolio-item project-6 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl reveal-on-scroll">
+                        <div class="project-image w-full h-80 flex items-center justify-center">
+                            <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39520_j4cgl1.png" 
+                                 alt="Скриншот проекта Turbofish" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="bg-white p-5 flex justify-between items-center"> <!-- 20px padding -->
+                            <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Turbofish</div>
+                            <div class="text-right text-xs text-gray-500 tracking-wider uppercase">UX Design / UI Design / E-commerce</div>
+                        </div>
+                    </a>
+
+                </div>
+
+                <!-- Заголовок стоимости -->
+                <div id="pricing-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll"> <!-- 20px padding top/bottom -->
+                    <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Стоимость</h2>
+                </div>
+
+                <div class="space-y-5"> <!-- 20px space-y -->
+                    <!-- Дизайн сайта (Figma) (с анимацией) -->
+                    <div class="bg-white shadow-xl p-5 reveal-on-scroll"> <!-- 20px padding -->
+                        <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Дизайн сайта (Figma)</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-8">Одностраничный сайт, промо-страница, посадочная страница для продукта или услуги. Только дизайн - без сборки.</p>
+                        
+                        <div class="flex flex-col space-y-4">
+                            <div class="bg-gray-100 p-4 flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Лендинг</span>
+                                <span class="text-3xl font-medium text-gray-900"> $450</span>
+                            </div>
+                            <div class="bg-gray-100 p-4 flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Многостраничный сайт</span>
+                                <span class="text-3xl font-medium text-gray-900"> $650</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Сайт под ключ (Figma + Tilda) (с анимацией) -->
+                    <div class="bg-white shadow-xl p-5 reveal-on-scroll"> <!-- 20px padding -->
+                        <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Сайт под ключ (Figma + Tilda)</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-8">Одностраничный сайт, промо-страница, посадочная страница для продукта или услуги. Полный цикл: дизайн и сборка.</p>
+                        
+                        <div class="flex flex-col space-y-4">
+                            <div class="bg-gray-100 p-4 flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Лендинг</span>
+                                <span class="text-3xl font-medium text-gray-900"> от $550</span>
+                            </div>
+                            <div class="bg-gray-100 p-4 flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Многостраничный сайт</span>
+                                <span class="text-3xl font-medium text-gray-900"> от $850</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Другие продукты (с анимацией) -->
+                    <div class="bg-white shadow-xl p-5 reveal-on-scroll"> <!-- 20px padding -->
+                        <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Другие продукты?</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-8">Графические задачи, не связанные напрямую с сайтами: баннеры, презентации, соцсети и другое. Обсудим задачу и предложу решение.</p>
+                        
+                        <div class="flex flex-col space-y-4">
+                            <div class="bg-gray-100 p-4 flex justify-between items-center">
+                                <span class="text-sm text-gray-600">По договоренности</span>
+                                <span class="text-3xl font-medium text-gray-900"> от $50</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка заказа - Ссылка на Telegram (с анимацией) -->
+                <a href="https://t.me/zorochik" target="_blank" class="block pb-5 reveal-on-scroll"> <!-- 20px padding bottom -->
+                    <button class="w-full bg-white text-black text-lg font-medium py-6 shadow-xl mt-4 transition duration-300 hover:bg-gray-200 rounded-none">
+                        Заказать сайт
+                    </button>
+                </a>
+            
+            </div>
 
         </div>
     </div>
