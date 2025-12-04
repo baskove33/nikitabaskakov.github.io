@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYOR 5 - Дизайн-кейс</title>
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Настройка шрифта Inter (резервный) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        /* TT Neoris: ВСТАВЛЕН REGULAR WOFF и WOFF2 */
+        @font-face {
+            font-family: 'TT Neoris';
+            src: url('https://res.cloudinary.com/dt79npeea/raw/upload/v1764859192/TT_Neoris_Regular_bb9kfp.woff2') format('woff2'),
+                 url('https://res.cloudinary.com/dt79npeea/raw/upload/v1764859114/TT_Neoris_Regular_mj4jee.woff') format('woff');
+            font-weight: 400; /* Regular */
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'TT Neoris';
+            /* ВСТАВЬТЕ ССЫЛКИ НА MEDIUM НАЧЕРТАНИЕ, ЕСЛИ ОНО НУЖНО */
+            src: url('URL_К_ВАШЕМУ_ШРИФТУ_MEDIUM.woff2') format('woff2'),
+                 url('URL_К_ВАШЕМУ_ШРИФТУ_MEDIUM.woff') format('woff');
+            font-weight: 500; /* Medium/SemiBold */
+            font-style: normal;
+        }
+
+        /* CUSTOM TRACKING (-0.04em = -4%) */
+        .tracking-custom-tight {
+            letter-spacing: -0.04em;
+        }
+
+        body {
+            /* ПЛАВНЫЙ СКРОЛЛ АКТИВЕН */
+            font-family: 'TT Neoris', 'Inter', sans-serif;
+            scroll-behavior: smooth; 
+        }
+        
+        /* Основной контейнер кейса будет центрирован и иметь максимальную ширину */
+        .case-container {
+            max-width: 1200px;
+        }
+        
+        /* Заголовок кейса */
+        .case-title {
+            font-size: 56px;
+            line-height: 1.1;
+        }
+
+        /* СТИЛЬ ДЛЯ ПРЕЛОАДЕРА */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* Черный фон для плавного перехода */
+            opacity: 1;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out; /* Плавное исчезновение */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none; /* Разрешаем клики, пока не исчезнет */
+        }
+    </style>
+</head>
+<body class="bg-black text-white antialiased">
+
+    <!-- ПРЕЛОАДЕР (ДОЛЖЕН БЫТЬ ПЕРВЫМ ЭЛЕМЕНТОМ В BODY) -->
+    <div id="preloader" class="opacity-100">
+        <!-- Опционально: можно добавить спиннер или логотип -->
+        <svg class="animate-spin h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    </div>
+
+    <!-- Хедер и Навигация -->
+    <header class="bg-black sticky top-0 z-50 p-5 border-b border-white/10">
+        <div class="case-container mx-auto flex justify-between items-center tracking-custom-tight">
+            <!-- Ссылка на главную страницу -->
+            <a href="index.html" class="text-xl font-medium hover:text-white/80 transition duration-300">
+                Баскаков Никита
+            </a>
+            <nav>
+                <!-- Навигация на главный сайт, к секции портфолио -->
+                <a href="index.html#portfolio-section" class="nav-link text-sm text-white/60 hover:text-white transition duration-300">
+                    ← К портфолио
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной контент кейса -->
+    <main class="py-12 px-4 sm:px-8">
+        <div class="case-container mx-auto space-y-10">
+
+            <!-- Заголовок и вводная часть -->
+            <div class="space-y-5 reveal-on-scroll">
+                <h1 class="case-title font-medium tracking-custom-tight">
+                    DYOR 5 <!-- ИМЯ ПРОЕКТА -->
+                </h1>
+                <p class="text-xl text-white/80 max-w-4xl">
+                    Уникальный динамичный лонгрид для криптокурса, полностью построенный на авторских иллюстрациях. Проект выделяется оригинальной айдентикой, не похожей на стандартные криптопроекты, и включает разработку более 250 обучающих слайдов.
+                </p>
+            </div>
+
+            <!-- Раздел "О проекте" и ключевые метрики -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 border-t border-b border-white/10 py-5 reveal-on-scroll">
+                <div>
+                    <p class="text-sm text-white/60 uppercase">Роль</p>
+                    <p class="text-lg font-medium">Веб-дизайнер, Иллюстратор</p>
+                </div>
+                <div>
+                    <p class="text-sm text-white/60 uppercase">Стек</p>
+                    <!-- ОБНОВЛЕНО: Добавлена платформа GetCourse -->
+                    <p class="text-lg font-medium">Figma, GetCourse</p>
+                </div>
+                <div>
+                    <p class="text-sm text-white/60 uppercase">Срок</p>
+                    <p class="text-lg font-medium">2 месяца</p>
+                </div>
+            </div>
+
+            <!-- Блок с большим изображением (Обзор дизайна - ГЛАВНЫЙ СКРИНШОТЫ) -->
+            <div class="reveal-on-scroll">
+                <h2 class="text-2xl font-medium tracking-custom-tight mb-5">Обзор дизайна (Видео)</h2>
+                
+                <!-- НОВЫЙ ГЛАВНЫЙ БЛОК: ВИДЕОРОЛИК -->
+                <video 
+                    src="https://res.cloudinary.com/dt79npeea/video/upload/v1764879675/1123_1_eciwcp.mp4" 
+                    autoplay 
+                    loop 
+                    muted 
+                    playsinline 
+                    class="w-full h-auto shadow-2xl bg-gray-900"
+                    controls 
+                    poster="https://placehold.co/1200x675/7b1fa2/ffffff?text=Загрузка+видео+DYOR+5">
+                    Ваш браузер не поддерживает видео.
+                </video>
+                
+                <p class="text-sm text-white/60 mt-3">
+                    Демонстрация динамики лонгрида и ключевые экраны.
+                </p>
+            </div>
+
+            <!-- Раздел "Детали и Процесс" -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 pt-10 reveal-on-scroll">
+                <div class="lg:col-span-2">
+                    <h3 class="text-2xl font-medium tracking-custom-tight mb-4">Контекст и Реализация</h3>
+                    <p class="text-base text-white/80 leading-relaxed space-y-4">
+                        <p>Это очень сильный проект в моем портфолио и действительно очень интересный сайт. Каждая иллюстрация для этого лонгрида под запуск криптокурса была отрисована мною лично, без использования искусственного интеллекта. В некоторых блогах вы можете найти отсылку к некоторым сценам. Проект получился очень динамичным, не похожим на большинство криптопроектов.</p>
+                        <p>Отдельно хочу сказать спасибо продюсеру Ивану Брину. Дизайн был разработан специально **под платформу GetCourse** для запуска курса, включая более 250 слайдов обучающего материала. Айдентика, созданная для курса, использовалась на одном из криптомероприятий в Казани.</p>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- БЛОК ГАЛЕРЕИ: ФИНАЛЬНОЕ ЧЕРЕДОВАНИЕ ШИРОКИХ И КВАДРАТНЫХ БЛОКОВ -->
+            <div class="pt-10 space-y-5">
+                <h3 class="text-2xl font-medium tracking-custom-tight reveal-on-scroll">Детальная демонстрация иллюстраций и дизайна</h3>
+                
+                <!-- ВСТАВЛЕН СТАРЫЙ ГЛАВНЫЙ СКРИНШОТ (Link 1) -->
+                <div class="reveal-on-scroll">
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877354/Rectangle_39528_mpslcv.png" 
+                         alt="Второй обзорный скриншот проекта DYOR 5" 
+                         class="w-full h-auto shadow-xl">
+                </div>
+
+                <!-- 2 КВАДРАТА (Links 2, 3) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 reveal-on-scroll">
+                    <!-- Квадрат 1 -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877353/3123128_kpm8fv.png" 
+                         alt="Скриншот 2" 
+                         class="w-full h-auto object-cover shadow-xl">
+                    <!-- Квадрат 2 -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877352/3123132_fwqgi2.png" 
+                         alt="Скриншот 3" 
+                         class="w-full h-auto object-cover shadow-xl">
+                </div>
+                
+                <!-- 2 КВАДРАТА (Links 4, 5) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 reveal-on-scroll">
+                    <!-- Квадрат 3 (Link 4) -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877353/3123135_oc7wxc.png" 
+                         alt="Скриншот 4" 
+                         class="w-full h-auto object-cover shadow-xl">
+                    <!-- Квадрат 4 (Link 5) -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877352/3123134_johcj1.png" 
+                         alt="Скриншот 5" 
+                         class="w-full h-auto object-cover shadow-xl">
+                </div>
+
+                <!-- 2 КВАДРАТА (Link 6, New Link 7) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 reveal-on-scroll">
+                    <!-- Квадрат 5 (Link 6) -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877352/3123130_lwrjb9.png" 
+                         alt="Скриншот 6" 
+                         class="w-full h-auto object-cover shadow-xl">
+                    <!-- Квадрат 6 (New Link 7) -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764878902/3123139_aw1dg1.png" 
+                         alt="Скриншот 7 (Новый)" 
+                         class="w-full h-auto object-cover shadow-xl">
+                </div>
+                
+                <!-- 1 ШИРОКИЙ КВАДРАТ (Link 8) -->
+                <div class="reveal-on-scroll">
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877354/Rectangle_39526_sgpwzp.png" 
+                         alt="Скриншот 8 (Широкий)" 
+                         class="w-full h-auto shadow-xl">
+                </div>
+
+                <!-- 2 КВАДРАТА (Links 9, 10) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 reveal-on-scroll">
+                    <!-- Квадрат 7 (Link 9) -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877352/3123129_rlsdtc.png" 
+                         alt="Скриншот 9" 
+                         class="w-full h-auto object-cover shadow-xl">
+                    <!-- Квадрат 8 (Link 10) -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877352/3123133_udue4g.png" 
+                         alt="Скриншот 10" 
+                         class="w-full h-auto object-cover shadow-xl">
+                </div>
+                
+                <!-- 1 ШИРОКИЙ КВАДРАТ (Link 11) -->
+                <div class="reveal-on-scroll">
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877356/Rectangle_39527_zi0edy.png" 
+                         alt="Скриншот 11 (Широкий)" 
+                         class="w-full h-auto shadow-xl">
+                </div>
+
+                <!-- 2 КВАДРАТА (Links 12, 13) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 reveal-on-scroll">
+                    <!-- Квадрат 9 (Link 12) -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877353/3123137_zii944.png" 
+                         alt="Скриншот 12" 
+                         class="w-full h-auto object-cover shadow-xl">
+                    <!-- Квадрат 10 (Link 13) -->
+                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764877353/3123138_sjauuu.png" 
+                         alt="Скриншот 13" 
+                         class="w-full h-auto object-cover shadow-xl">
+                </div>
+
+                <p class="text-sm text-white/60 pt-2 reveal-on-scroll">
+                    Наглядная демонстрация уникальной визуальной метафоры и динамических элементов лонгрида DYOR 5.
+                </p>
+            </div>
+            
+            <!-- НОВЫЙ БЛОК: Ссылки на другие проекты (динамически скрывает текущий) -->
+            <div class="pt-10 reveal-on-scroll">
+                <h2 class="text-3xl font-medium tracking-custom-tight mb-5">Смотрите также другие проекты:</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5" id="related-projects">
+                    <!-- Ссылка на DYOR 5 (СКРЫВАЕТСЯ!) -->
+                    <a href="dyor5.html" data-project="dyor5" class="current-project-link nav-link bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300 hidden">
+                        <span class="text-lg font-medium tracking-custom-tight">DYOR 5</span>
+                        <p class="text-xs text-white/50">UI Design / Brand</p>
+                    </a>
+                    <!-- Ссылка на Nu i Che -->
+                    <a href="nuiche.html" data-project="nuiche" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
+                        <span class="text-lg font-medium tracking-custom-tight">Nu i Che</span>
+                        <p class="text-xs text-white/50">Web Design</p>
+                    </a>
+                    <!-- Ссылка на Nobee -->
+                    <a href="nobee.html" data-project="nobee" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
+                        <span class="text-lg font-medium tracking-custom-tight">Nobee</span>
+                        <p class="text-xs text-white/50">Web Design</p>
+                    </a>
+                    <!-- Ссылка на 9 circles of Hell -->
+                    <a href="circles.html" data-project="circles" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
+                        <span class="text-lg font-medium tracking-custom-tight">9 circles of Hell</span>
+                        <p class="text-xs text-white/50">Longread</p>
+                    </a>
+                    <!-- Ссылка на Din Drone -->
+                    <a href="dindrone.html" data-project="dindrone" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
+                        <span class="text-lg font-medium tracking-custom-tight">Din Drone</span>
+                        <p class="text-xs text-white/50">UI Design / 3D</p>
+                    </a>
+                    <!-- Ссылка на Turbofish -->
+                    <a href="turbofish.html" data-project="turbofish" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
+                        <span class="text-lg font-medium tracking-custom-tight">Turbofish</span>
+                        <p class="text-xs text-white/50">UX Design / E-commerce</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- CTA - Призыв к действию -->
+            <div class="pt-10 reveal-on-scroll">
+                <p class="text-xl font-medium text-white/80 tracking-custom-tight">
+                    Хотите такой же мощный кейс для вашего бизнеса?
+                </p>
+                <a href="https://t.me/zorochik" target="_blank" class="block w-full max-w-sm mt-4">
+                    <button class="w-full bg-white text-black text-lg font-medium py-4 shadow-xl transition duration-300 hover:bg-gray-200">
+                        Написать в Telegram
+                    </button>
+                </а>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Скрипт для анимации скролла и ПРЕЛОАДЕРА -->
+    <script>
+        // === ПРЕЛОАДЕР И ПЛАВНЫЕ ПЕРЕХОДЫ ===
+        const preloader = document.getElementById('preloader');
+
+        // 1. Скрывает прелоадер после загрузки страницы
+        function hidePreloader() {
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.zIndex = '-1';
+                    preloader.style.pointerEvents = 'none';
+                }, 500); // 500ms соответствует transition в CSS
+            }
+        }
+
+        // 2. Показывает прелоадер перед уходом со страницы
+        function showPreloader(e) {
+            // Если это внешняя ссылка (target="_blank") или якорная ссылка на той же странице, не показываем прелоадер.
+            const target = e.currentTarget;
+            const href = target.getAttribute('href');
+            
+            if (href && (href.startsWith('#') || target.getAttribute('target') === '_blank')) {
+                return;
+            }
+
+            // Показываем прелоадер
+            preloader.style.opacity = '1';
+            preloader.style.zIndex = '9999';
+            preloader.style.pointerEvents = 'all';
+
+            // Предотвращаем стандартный переход
+            e.preventDefault();
+
+            // Ждем завершения анимации (500мс) и только потом переходим
+            setTimeout(() => {
+                window.location.href = href;
+            }, 500);
+        }
+
+        // === ДИНАМИЧЕСКОЕ СКРЫТИЕ И АНИМАЦИИ ===
+        
+        // Функция для скрытия ссылки на текущий проект
+        function setupRelatedProjects() {
+            const path = window.location.pathname;
+            const currentFileName = path.split('/').pop(); 
+            const currentProjectSlug = currentFileName.replace('.html', ''); 
+
+            if (currentProjectSlug) {
+                const currentProjectLink = document.querySelector(`[data-project="${currentProjectSlug}"]`);
+                if (currentProjectLink) {
+                    currentProjectLink.classList.add('hidden'); // Используем Tailwind hidden
+                }
+            }
+        }
+        
+        // === ЗАПУСК ===
+        document.addEventListener('DOMContentLoaded', () => {
+            // Инициализация Intersection Observer для анимации появления элементов при скролле
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const element = entry.target;
+
+                    if (entry.isIntersecting) {
+                        element.classList.remove('opacity-0', 'translate-y-4');
+                        element.classList.add('opacity-100', 'translate-y-0');
+                        observer.unobserve(element);
+                    }
+                });
+            }, {
+                threshold: 0.1 
+            });
+
+            // 1. Настраиваем прелоадер для всех внутренних ссылок
+            document.querySelectorAll('a[href^="index.html"], a[href$=".html"]').forEach(link => {
+                // Исключаем ссылки на телеграм, которые открываются в новом окне
+                if (link.getAttribute('target') !== '_blank') {
+                    link.addEventListener('click', showPreloader);
+                }
+            });
+            
+            // 2. Настраиваем скрытие ссылки на текущий проект
+            setupRelatedProjects();
+            
+            // 3. Настраиваем анимацию появления
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            revealElements.forEach(el => {
+                el.classList.add('opacity-0', 'translate-y-4', 'transition-all', 'duration-700', 'ease-out');
+                observer.observe(el);
+            });
+        });
+
+        // 4. Скрываем прелоадер после полной загрузки страницы
+        window.addEventListener('load', hidePreloader);
+        
+        // Дополнительная гарантия скрытия (на случай, если load не сработает быстро)
+        setTimeout(hidePreloader, 3000); 
+
+    </script>
+</body>
+</html>
