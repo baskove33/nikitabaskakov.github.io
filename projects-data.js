@@ -10,7 +10,7 @@ const projectsData = [
         category: 'UI Design / Web Design / Brand Design',
         image: 'https://res.cloudinary.com/dt79npeea/image/upload/v1764842242/Rectangle_39524_y5ycpn.png',
         link: 'dyor5.html',
-        status: 'locked' // <--- ПОМЕНЯЙ НА 'open', ЧТОБЫ ОТКРЫТЬ
+        status: 'open' // <--- ПОМЕНЯЙ НА 'open', ЧТОБЫ ОТКРЫТЬ
     },
     {
         id: 'nuiche',
