@@ -49,21 +49,73 @@
             line-height: 1.1;
         }
 
-        /* СТИЛЬ ДЛЯ ПРЕЛОАДЕРА */
+        /* === НОВАЯ АНИМАЦИЯ ПРЕЛОАДЕРА (PULSE LOADER) === */
         #preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000; /* Черный фон для плавного перехода */
+            background-color: #000;
             opacity: 1;
             z-index: 9999;
-            transition: opacity 0.5s ease-out; /* Плавное исчезновение */
+            transition: opacity 0.5s ease-out;
             display: flex;
             justify-content: center;
             align-items: center;
-            pointer-events: none; /* Разрешаем клики, пока не исчезнет */
+            pointer-events: none;
+        }
+
+        .pulse-loader span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: pulse 1.2s infinite ease-in-out;
+        }
+
+        .pulse-loader span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .pulse-loader span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulse {
+            0%, 80%, 100% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            40% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+        /* === КОНЕЦ НОВОЙ АНИМАЦИИ === */
+        
+        /* Стили для карточек "Смотрите также" */
+        .related-project-card {
+            display: block;
+            background-color: #111; /* Темный фон для карточки */
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+        }
+
+        .related-project-card:hover {
+            background-color: #1a1a1a; /* Немного осветляем фон при наведении для обратной связи */
+            transform: translateY(0); /* Удаление эффекта подъема */
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05); /* Смягчена тень */
+        }
+
+        .related-project-card img {
+            width: 100%;
+            height: 150px; /* Фиксированная высота для превью */
+            object-fit: cover;
         }
     </style>
 </head>
@@ -71,11 +123,12 @@
 
     <!-- ПРЕЛОАДЕР (ДОЛЖЕН БЫТЬ ПЕРВЫМ ЭЛЕМЕНТОМ В BODY) -->
     <div id="preloader" class="opacity-100">
-        <!-- Опционально: можно добавить спиннер или логотип -->
-        <svg class="animate-spin h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
+        <!-- НОВЫЙ PULSE LOADER -->
+        <div class="pulse-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
 
     <!-- Хедер и Навигация -->
@@ -127,7 +180,7 @@
             <!-- Блок с большим изображением (Обзор дизайна) -->
             <div class="reveal-on-scroll">
                 <h2 class="text-2xl font-medium tracking-custom-tight mb-5">Обзор дизайна</h2>
-                <!-- ГЛАВНЫЙ СКРИНШОТ: Link 1 -->
+                <!-- ГЛАВНЫЙ СКРИНШОТ: Link 1 (ОБНОВЛЕН) -->
                 <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764872255/Din_Drone-1_rg5w0t.png" 
                      alt="Главный скриншот проекта Turbofish" 
                      class="w-full h-auto shadow-2xl">
@@ -180,41 +233,60 @@
                 </p>
             </div>
             
-            <!-- НОВЫЙ БЛОК: Ссылки на другие проекты (динамически скрывает текущий) -->
+            <!-- НОВЫЙ БЛОК: Ссылки на другие проекты (ВИЗУАЛЬНАЯ СЕТКА - 5 КЕЙСОВ) -->
             <div class="pt-10 reveal-on-scroll">
                 <h2 class="text-3xl font-medium tracking-custom-tight mb-5">Смотрите также другие проекты:</h2>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5" id="related-projects">
+                <!-- Сетка 2x2 на мобильных, 3x2 на планшетах, 5x1 на десктопе -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5" id="related-projects">
+                    
                     <!-- Ссылка на DYOR 5 -->
-                    <a href="dyor5.html" data-project="dyor5" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
-                        <span class="text-lg font-medium tracking-custom-tight">DYOR 5</span>
-                        <p class="text-xs text-white/50">UI Design / Brand</p>
+                    <a href="dyor5.html" data-project="dyor5" class="nav-link related-project-card">
+                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842242/Rectangle_39524_y5ycpn.png" alt="Превью DYOR 5" class="w-full h-auto">
+                        <div class="p-4 text-left">
+                            <span class="text-lg font-medium tracking-custom-tight">DYOR 5</span>
+                            <p class="text-xs text-white/50">UI Design / Brand</p>
+                        </div>
                     </a>
+                    
                     <!-- Ссылка на Nu i Che -->
-                    <a href="nuiche.html" data-project="nuiche" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
-                        <span class="text-lg font-medium tracking-custom-tight">Nu i Che</span>
-                        <p class="text-xs text-white/50">Web Design</p>
+                    <a href="nuiche.html" data-project="nuiche" class="nav-link related-project-card">
+                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39518_rwxdzz.png" alt="Превью Nu i Che" class="w-full h-auto">
+                        <div class="p-4 text-left">
+                            <span class="text-lg font-medium tracking-custom-tight">Nu i Che</span>
+                            <p class="text-xs text-white/50">Web Design</p>
+                        </div>
                     </a>
+
                     <!-- Ссылка на Nobee -->
-                    <a href="nobee.html" data-project="nobee" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
-                        <span class="text-lg font-medium tracking-custom-tight">Nobee</span>
-                        <p class="text-xs text-white/50">Web Design</p>
+                    <a href="nobee.html" data-project="nobee" class="nav-link related-project-card">
+                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39521_ck13rv.png" alt="Превью Nobee" class="w-full h-auto">
+                        <div class="p-4 text-left">
+                            <span class="text-lg font-medium tracking-custom-tight">Nobee</span>
+                            <p class="text-xs text-white/50">Web Design</p>
+                        </div>
                     </a>
+                    
                     <!-- Ссылка на 9 circles of Hell -->
-                    <a href="circles.html" data-project="circles" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
-                        <span class="text-lg font-medium tracking-custom-tight">9 circles of Hell</span>
-                        <p class="text-xs text-white/50">Longread</p>
+                    <a href="circles.html" data-project="circles" class="nav-link related-project-card">
+                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" alt="Превью 9 circles of Hell" class="w-full h-auto">
+                        <div class="p-4 text-left">
+                            <span class="text-lg font-medium tracking-custom-tight">9 circles of Hell</span>
+                            <p class="text-xs text-white/50">Longread</p>
+                        </div>
                     </a>
+                    
                     <!-- Ссылка на Din Drone -->
-                    <a href="dindrone.html" data-project="dindrone" class="nav-link block bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300">
-                        <span class="text-lg font-medium tracking-custom-tight">Din Drone</span>
-                        <p class="text-xs text-white/50">UI Design / 3D</p>
+                    <a href="dindrone.html" data-project="dindrone" class="nav-link related-project-card">
+                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" alt="Превью Din Drone" class="w-full h-auto">
+                        <div class="p-4 text-left">
+                            <span class="text-lg font-medium tracking-custom-tight">Din Drone</span>
+                            <p class="text-xs text-white/50">UI Design / 3D</p>
+                        </div>
                     </a>
-                    <!-- Ссылка на Turbofish (СКРЫВАЕТСЯ!) -->
-                    <a href="turbofish.html" data-project="turbofish" class="current-project-link nav-link bg-white/5 p-4 text-center hover:bg-white/10 transition duration-300 hidden">
-                        <span class="text-lg font-medium tracking-custom-tight">Turbofish</span>
-                        <p class="text-xs text-white/50">UX Design / E-commerce</p>
-                    </a>
+
+                    <!-- Скрываем текущий Turbofish -->
+                    <a href="turbofish.html" data-project="turbofish" class="current-project-link hidden"></a>
                 </div>
             </div>
 
@@ -224,9 +296,26 @@
                     Хотите такой же мощный кейс для вашего бизнеса?
                 </p>
                 <a href="https://t.me/zorochik" target="_blank" class="block w-full max-w-sm mt-4">
-                    <button class="w-full bg-white text-black text-lg font-medium py-4 shadow-xl transition duration-300 hover:bg-gray-200">
-                        Написать в Telegram
+                    <!-- АНИМИРОВАННАЯ КНОПКА (Закругление = 0) -->
+                    <button class="group relative w-full cursor-pointer overflow-hidden border border-white text-lg font-medium py-4 text-white shadow-xl transition duration-300 rounded-none hover:text-black">
+                        <!-- Base Text (Исходный текст, скрывается) -->
+                        <span class="inline-block transition-all duration-300 group-hover:-translate-x-8 group-hover:opacity-0 z-20 relative">
+                            Написать в Telegram
+                        </span>
+                        <!-- Hover Background Fill (Эффект заливки) -->
+                        <div class="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-none bg-white transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-white z-0"></div>
+                        <!-- Hover Content (Новый текст + стрелка, появляется) -->
+                        <div class="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-black opacity-0 transition-all duration-300 group-hover:-translate-x-0 group-hover:opacity-100">
+                            <span>Написать в Telegram</span>
+                            <!-- ArrowRight SVG (замена компонента Lucide) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                                <path d="M5 12l14 0" />
+                                <path d="M15 16l4-4" />
+                                <path d="M15 8l4 4" />
+                            </svg>
+                        </div>
                     </button>
+                    <!-- /АНИМИРОВАННАЯ КНОПКА -->
                 </a>
             </div>
 
@@ -289,23 +378,23 @@
             }
         }
         
-        // Инициализация Intersection Observer для анимации появления элементов при скролле
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const element = entry.target;
-
-                if (entry.isIntersecting) {
-                    element.classList.remove('opacity-0', 'translate-y-4');
-                    element.classList.add('opacity-100', 'translate-y-0');
-                    observer.unobserve(element);
-                }
-            });
-        }, {
-            threshold: 0.1 
-        });
-
         // === ЗАПУСК ===
         document.addEventListener('DOMContentLoaded', () => {
+            // Инициализация Intersection Observer для анимации появления элементов при скролле
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const element = entry.target;
+
+                    if (entry.isIntersecting) {
+                        element.classList.remove('opacity-0', 'translate-y-4');
+                        element.classList.add('opacity-100', 'translate-y-0');
+                        observer.unobserve(element);
+                    }
+                });
+            }, {
+                threshold: 0.1 
+            });
+
             // 1. Настраиваем прелоадер для всех внутренних ссылок
             document.querySelectorAll('a[href^="index.html"], a[href$=".html"]').forEach(link => {
                 // Исключаем ссылки на телеграм, которые открываются в новом окне
