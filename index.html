@@ -25,9 +25,11 @@
         }
 
         body {
-            /* ПЛАВНЫЙ СКРОЛЛ АКТИВЕН */
+            /* ПЛАВНЫЙ СКРОЛЛ АКТИВЕН (УВЕЛИЧЕНА ПЛАВНОСТЬ) */
             font-family: 'TT Neoris', 'Inter', sans-serif;
             scroll-behavior: smooth;
+            /* Добавим более долгий переход для визуального эффекта smooth scroll */
+            transition: scroll-behavior 0.8s ease-in-out;
         }
         
         /* Глобальное отключение прокрутки на десктопе, чтобы прокручивался только правый блок */
@@ -35,17 +37,18 @@
             body {
                 overflow: hidden;
             }
+            /* Скрываем полосу прокрутки для правой панели (теперь это #scroll-panel) */
+            #scroll-panel::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera */
+            }
+            #scroll-panel {
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+                /* На десктопе прокручивается только этот блок */
+            }
         }
         
-        /* === СКРЫТИЕ СТАНДАРТНОЙ ПОЛОСЫ ПРОКРУТКИ (для внутреннего контейнера) === */
-        #right-scroll-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
-        #right-scroll-container {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-            /* На десктопе прокручивается только этот блок */
-        }
+        /* === УДАЛЕНЫ СТИЛИ #right-scroll-container, так как он больше не прокручивается === */
 
         /* === НОВАЯ АНИМАЦИЯ ПРЕЛОАДЕРА (PULSE LOADER) === */
         #preloader {
@@ -107,18 +110,28 @@
 
         /* Стиль для печатного эффекта */
         .typing-text {
-            /* Курсор теперь белый, так как фон карточки приветствия черный */
+            /* Фиксируем стиль курсора */
             border-right: 2px solid rgba(255, 255, 255, 0.7); 
-            white-space: nowrap;
-            overflow: hidden;
+            /* Критично: текст не должен переноситься */
+            white-space: nowrap; 
+            /* Критично: скрываем лишнее, пока не напечатано */
+            overflow: hidden; 
             height: 1.5em; /* Ограничиваем высоту, чтобы текст не прыгал */
+            display: inline-block; /* Позволяет управлять шириной */
+            max-width: 100%; /* Для центрирования */
         }
         
-        /* Класс для анимации сужения/исчезновения карточек */
-        .project-card-wrapper {
+        /* Класс для анимации сужения/блюра при скролле (теперь включает Приветствие) */
+        .scroll-animated-element {
             /* Увеличил время transition, чтобы блюр успевал срабатывать */
             transition: transform 0.15s linear, filter 0.15s linear, opacity 0.15s linear;
             transform-origin: center center;
+        }
+
+        /* Класс для анимации появления (только translate/opacity) */
+        .reveal-on-scroll {
+            /* Этот класс отвечает только за появление, но не за скролл-эффект */
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
         }
 
         /* ДОПОЛНИТЕЛЬНЫЙ ЭФФЕКТ НАВЕДЕНИЯ НА ПРОЕКТЫ */
@@ -130,53 +143,18 @@
             filter: none;
         }
         
-        /* === ГРАДИЕНТНЫЕ МАСКИ (НАСТОЯЩИЙ BLUR ЭФФЕКТ) === */
+        /* === ГРАДИЕНТНЫЕ МАСКИ (УДАЛЕНО) === */
         .scroll-mask-container {
             position: relative;
         }
-
-        /* Маска сверху (сочетание blur и градиента) */
-        .scroll-mask-top {  
-            content: '';  
-            position: absolute;  
-            top: 48px;  
-            left: 50%;  
-            transform: translateX(-50%);  
-            width: calc(100% - 96px);  
-            max-width: 365px;  
-            height: 72px; 
-            backdrop-filter: blur(14px);  
-            -webkit-backdrop-filter: blur(14px); 
-            /* Градиент от ЧИСТОГО ЧЕРНОГО (#000) к прозрачному, без тени */
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);  
-            z-index: 10;  
-            pointer-events: none;
-        }
-
-        /* Маска снизу (сочетание blur и градиента) */
-        .scroll-mask-bottom {  
-            content: '';  
-            position: absolute;  
-            /* bottom: 48px - это отступ p-12 родительского div. Кнопка находится внутри скролла. */
-            bottom: 48px;  
-            left: 50%;  
-            transform: translateX(-50%);  
-            width: calc(100% - 96px);  
-            max-width: 365px;  
-            height: 72px; 
-            backdrop-filter: blur(14px);  
-            -webkit-backdrop-filter: blur(14px); 
-            /* Градиент от прозрачного к ЧИСТОМУ ЧЕРНОМУ (#000), без тени */
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);  
-            z-index: 10;  
-            pointer-events: none;
-        }
-
-        /* Корректировка видимости масок для мобильных устройств */
-        @media (max-width: 1023px) {
-            .scroll-mask-top, .scroll-mask-bottom {
-                display: none;
-            }
+        
+        /* ИСПРАВЛЕНО: Теперь min-height = 100vh минус 4rem (вместо 6rem) - это увеличивает видимую область */
+        #welcome-message {
+            /* 100vh минус padding top/bottom от lg:p-12 (3rem * 2 = 6rem), но мы хотим, чтобы он был чуть выше */
+            min-height: calc(100vh - 4rem); 
+            display: flex; /* Используем flex для центрирования содержимого */
+            flex-direction: column;
+            justify-content: center;
         }
         
     </style>
@@ -213,47 +191,44 @@
             </div>
         </div>
 
-        <!-- Правая часть (Контент) - ВНЕШНИЙ КОНТЕЙНЕР ДЛЯ МАСКИ -->
-        <div class="lg:w-1/2 max-w-full lg:h-screen lg:p-12 p-4 sm:p-10 flex justify-center scroll-mask-container">
+        <!-- Правая часть (Контент) - ВНЕШНИЙ КОНТЕЙНЕР (СЕЙЧАС ОН ПРОКРУЧИВАЕТСЯ!) -->
+        <!-- ID 'scroll-panel' теперь является основным элементом прокрутки -->
+        <div id="scroll-panel" class="lg:w-1/2 max-w-full lg:h-screen lg:p-12 p-4 sm:p-10 flex justify-center lg:overflow-y-auto scroll-mask-container">
             
-            <!-- МАСКА СВЕРХУ (видна только на LG+) -->
-            <div class="scroll-mask-top hidden lg:block"></div>
-            <!-- МАСКА СНИЗУ (видна только на LG+) -->
-            <div class="scroll-mask-bottom hidden lg:block"></div>
+            <!-- Внутренний контейнер с ограничением ширины -->
+            <div id="right-scroll-container" class="w-full lg:max-w-[365px] space-y-5"> 
 
-            <!-- Внутренний контейнер с ограничением ширины и АКТИВНЫМ СКРОЛЛОМ -->
-            <!-- pb-10 добавлен, чтобы дать пространство для скролла под нижнюю маску -->
-            <div id="right-scroll-container" class="w-full lg:max-w-[365px] lg:h-full lg:overflow-y-auto space-y-5 pb-10"> 
-
-                <!-- 0. НОВЫЙ ОТДЕЛЬНЫЙ БЛОК ПРИВЕТСТВИЯ (Стиль: крупный, черный, ДЛИННЕЕ) -->
-                <div id="welcome-message" class="bg-black shadow-lg p-8 py-20 reveal-on-scroll text-center border border-white/10">
+                <!-- 0. НОВЫЙ ОТДЕЛЬНЫЙ БЛОК ПРИВЕТСТВИЯ (Использует min-height для высоты) -->
+                <div id="welcome-message" class="bg-black shadow-lg p-8 reveal-on-scroll scroll-animated-element text-center">
                     <h3 class="text-5xl font-medium text-white mb-4 tracking-custom-tight">Приветствую!</h3>
-                    <!-- Печатающийся текст -->
-                    <p id="typing-output" class="text-base text-white/70 leading-relaxed typing-text mx-auto max-w-xs"></p>
+                    <!-- Печатающийся текст. Родительский div нужен для центрирования inline-block элемента. -->
+                    <div class="flex justify-center">
+                        <p id="typing-output" class="text-base text-white/70 leading-relaxed typing-text mx-auto max-w-xs"></p>
+                    </div>
                 </div>
                 
-                <!-- 1. Информационная карточка (с анимацией) -->
-                <div class="bg-white shadow-2xl p-5 reveal-on-scroll">
+                <!-- 1. Информационная карточка -->
+                <div class="bg-white shadow-2xl p-5 reveal-on-scroll scroll-animated-element">
                     <h1 class="text-[36px] font-medium text-gray-900 tracking-custom-tight mb-2 leading-none">Баскаков Никита</h1>
                     <p class="text-base text-gray-600 mb-20 font-light">Портфолио веб-дизайнера</p>
                     <p class="text-sm text-gray-400 leading-relaxed">и просто хорошего человека</p>
                 </div>
 
-                <!-- 2. Карточка с опытом (с анимацией) -->
-                <div class="bg-white shadow-lg p-5 flex justify-between items-center reveal-on-scroll">
+                <!-- 2. Карточка с опытом -->
+                <div class="bg-white shadow-lg p-5 flex justify-between items-center reveal-on-scroll scroll-animated-element">
                     <span class="text-sm text-gray-600">Опыт:</span>
                     <span class="text-xl font-medium text-gray-900"> +4 года</span>
                 </div>
 
                 <!-- Заголовок портфолио -->
-                <div id="portfolio-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll">
+                <div id="portfolio-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll scroll-animated-element">
                     <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Портфолио</h2>
                 </div>
 
-                <!-- 3. Проекты портфолио (ОБЕРНУТЫ В НОВЫЙ DIV ДЛЯ СКРОЛЛ-АНИМАЦИИ) -->
+                <!-- 3. Проекты портфолио -->
                 <div class="grid gap-5">
                     <!-- Проект 1: DYOR 5 -->
-                    <div class="project-card-wrapper reveal-on-scroll">
+                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                         <a href="dyor5.html" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none">
                             <div class="w-full h-80 flex items-center justify-center">
                                 <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842242/Rectangle_39524_y5ycpn.png" 
@@ -268,7 +243,7 @@
                     </div>
 
                     <!-- Проект 2: Nu i Che -->
-                    <div class="project-card-wrapper reveal-on-scroll">
+                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                         <a href="nuiche.html" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none">
                             <div class="w-full h-80 flex items-center justify-center">
                                 <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39518_rwxdzz.png" 
@@ -283,7 +258,7 @@
                     </div>
 
                     <!-- Проект 3: Nobee -->
-                    <div class="project-card-wrapper reveal-on-scroll">
+                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                         <a href="nobee.html" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none">
                             <div class="w-full h-80 flex items-center justify-center">
                                 <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39521_ck13rv.png" 
@@ -298,7 +273,7 @@
                     </div>
 
                     <!-- Проект 4: 9 circles of Hell -->
-                    <div class="project-card-wrapper reveal-on-scroll">
+                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                         <a href="circles.html" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none">
                             <div class="w-full h-80 flex items-center justify-center">
                                 <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" 
@@ -313,7 +288,7 @@
                     </div>
 
                     <!-- Проект 5: Din Drone -->
-                    <div class="project-card-wrapper reveal-on-scroll">
+                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                         <a href="dindrone.html" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none">
                             <div class="w-full h-80 flex items-center justify-center">
                                 <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" 
@@ -328,7 +303,7 @@
                     </div>
                     
                     <!-- Проект 6: Turbofish -->
-                    <div class="project-card-wrapper reveal-on-scroll">
+                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                         <a href="turbofish.html" class="portfolio-item project-6 bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none">
                             <div class="w-full h-80 flex items-center justify-center">
                                 <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39520_j4cgl1.png" 
@@ -345,13 +320,13 @@
                 </div>
 
                 <!-- Заголовок стоимости -->
-                <div id="pricing-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll">
+                <div id="pricing-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll scroll-animated-element">
                     <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Стоимость</h2>
                 </div>
 
                 <div class="space-y-5">
                     <!-- Дизайн сайта (Figma) (с анимацией) -->
-                    <div class="bg-white shadow-xl p-5 reveal-on-scroll">
+                    <div class="bg-white shadow-xl p-5 reveal-on-scroll scroll-animated-element">
                         <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Дизайн сайта (Figma)</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-8">Одностраничный сайт, промо-страница, посадочная страница для продукта или услуги. Только дизайн - без сборки.</p>
                         
@@ -368,7 +343,7 @@
                     </div>
 
                     <!-- Сайт под ключ (Figma + Tilda) (с анимацией) -->
-                    <div class="bg-white shadow-xl p-5 reveal-on-scroll">
+                    <div class="bg-white shadow-xl p-5 reveal-on-scroll scroll-animated-element">
                         <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Сайт под ключ (Figma + Tilda)</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-8">Одностраничный сайт, промо-страница, посадочная страница для продукта или услуги. Полный цикл: дизайн и сборка.</p>
                         
@@ -385,7 +360,7 @@
                     </div>
 
                     <!-- Другие продукты (с анимацией) -->
-                    <div class="bg-white shadow-xl p-5 reveal-on-scroll">
+                    <div class="bg-white shadow-xl p-5 reveal-on-scroll scroll-animated-element">
                         <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Другие продукты?</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-8">Графические задачи, не связанные напрямую с сайтами: баннеры, презентации, соцсети и другое. Обсудим задачу и предложу решение.</p>
                         
@@ -398,9 +373,9 @@
                     </div>
                 </div>
 
-                <!-- Кнопка заказа - Ссылка на Telegram (с анимацией) -->
-                <!-- Кнопка находится внутри скроллируемого контейнера -->
-                <a href="https://t.me/zorochik" target="_blank" class="block pt-5 reveal-on-scroll">
+                <!-- Кнопка заказа - Ссылка на Telegram (ВОССТАНОВЛЕНА АНИМАЦИЯ) -->
+                <!-- pt-10 для большего отступа сверху. pb-12 для отступа снизу -->
+                <a href="https://t.me/zorochik" target="_blank" class="block pt-10 reveal-on-scroll pb-12">
                     <!-- АНИМИРОВАННАЯ КНОПКА (Закругление = 0) -->
                     <button class="group relative w-full cursor-pointer overflow-hidden border border-white text-lg font-medium py-6 text-white shadow-xl transition duration-300 rounded-none hover:text-black">
                         <!-- Base Text (Исходный текст, скрывается) -->
@@ -434,15 +409,22 @@
         const typingOutput = document.getElementById('typing-output');
         const typingSpeed = 50;
         let charIndex = 0;
-
+        
+        // Изменение: теперь мы анимируем ширину элемента, чтобы курсор двигался
         function typeText() {
             if (charIndex < textToType.length) {
                 typingOutput.textContent += textToType.charAt(charIndex);
                 charIndex++;
+                // Анимация ширины (имитация движения курсора)
+                // Ширина устанавливается в зависимости от длины текста.
+                // Приблизительная ширина символа: 0.55em
+                typingOutput.style.width = (charIndex * 0.55) + 'em'; 
                 setTimeout(typeText, typingSpeed);
             } else {
                 // После завершения печати, убираем курсор
                 typingOutput.style.borderRight = 'none';
+                // Сбрасываем ширину, чтобы разрешить нормальное центрирование
+                typingOutput.style.width = 'auto'; 
             }
         }
 
@@ -485,25 +467,31 @@
         }
 
         // === АНИМАЦИЯ КАРТОЧЕК ПРИ СКРОЛЛЕ (СУЖЕНИЕ/БЛЮР) ===
-        const scrollContainer = document.getElementById('right-scroll-container');
+        // Теперь используем '#scroll-panel' как главный контейнер скролла
+        const scrollContainer = document.getElementById('scroll-panel'); 
+        // Элементы, которые должны анимироваться при скролле
+        const scrollAnimatedElements = document.querySelectorAll('.scroll-animated-element');
+        // Элементы для анимации появления (используются только при DOMContentLoaded)
         const revealElements = document.querySelectorAll('.reveal-on-scroll');
-        const projectWrappers = document.querySelectorAll('.project-card-wrapper');
+
 
         // Новые, более деликатные значения
         const maxScaleReduction = 0.04;   // минимум 96%
         const maxBlur = 2.5;              // максимум 2.5px
         const maxOpacityReduction = 0.25; // минимум 75% непрозрачности
 
-        if (scrollContainer && projectWrappers.length > 0) {
+        if (scrollContainer && scrollAnimatedElements.length > 0) {
             scrollContainer.addEventListener('scroll', () => {
                 const scrollContainerHeight = scrollContainer.offsetHeight;
                 const containerRect = scrollContainer.getBoundingClientRect();
                 const viewportCenter = scrollContainerHeight / 2;
                 
-                projectWrappers.forEach(wrapper => {
-                    const rect = wrapper.getBoundingClientRect();
+                // Итерируем по всем элементам, которые должны анимироваться при скролле
+                scrollAnimatedElements.forEach(element => {
+                    const rect = element.getBoundingClientRect();
                     
                     // Центр элемента относительно центра контейнера прокрутки
+                    // Поскольку scrollContainer теперь #scroll-panel (внешний), то rect.top - containerRect.top
                     const elementCenter = rect.top + (rect.height / 2) - containerRect.top;
                     const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
                     const maxDistance = scrollContainerHeight / 2;
@@ -516,9 +504,9 @@
                     const blur = normalizedDistance * maxBlur;
                     const opacity = 1 - (normalizedDistance * maxOpacityReduction);
                     
-                    wrapper.style.transform = `scale(${scale})`;
-                    wrapper.style.filter = `blur(${blur}px)`;
-                    wrapper.style.opacity = opacity.toString();
+                    element.style.transform = `scale(${scale})`;
+                    element.style.filter = `blur(${blur}px)`;
+                    element.style.opacity = opacity.toString();
                 });
             });
         }
@@ -531,6 +519,10 @@
                 if (entry.isIntersecting) {
                     element.classList.remove('opacity-0', 'translate-y-4');
                     element.classList.add('opacity-100', 'translate-y-0');
+                    // Дополнительный сброс, чтобы гарантировать четкость сразу после появления
+                    element.style.filter = 'none'; 
+                    element.style.transform = 'scale(1)';
+
                     initialObserver.unobserve(element);
                 }
             });
