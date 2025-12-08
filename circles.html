@@ -20,6 +20,7 @@
         }
         @font-face {
             font-family: 'TT Neoris';
+            /* ВСТАВЬТЕ ССЫЛКИ НА MEDIUM НАЧЕРТАНИЕ, ЕСЛИ ОНО НУЖНО */
             src: url('URL_К_ВАШЕМУ_ШРИФТУ_MEDIUM.woff2') format('woff2'),
                  url('URL_К_ВАШЕМУ_ШРИФТУ_MEDIUM.woff') format('woff');
             font-weight: 500; /* Medium/SemiBold */
@@ -37,10 +38,12 @@
             scroll-behavior: smooth; 
         }
         
+        /* Основной контейнер кейса будет центрирован и иметь максимальную ширину */
         .case-container {
             max-width: 1200px;
         }
         
+        /* Заголовок кейса */
         .case-title {
             font-size: 56px;
             line-height: 1.1;
@@ -335,18 +338,14 @@
                         </div>
                     </div>
                     
-                    <!-- ЗАБЛОКИРОВАН: Nu i Che -->
-                    <div onclick="openLockedPopup()" data-project="nuiche" class="related-project-card cursor-pointer group">
-                        <div class="locked-overlay">
-                            <svg class="lock-icon text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                            <span class="text-xs font-medium text-black uppercase tracking-widest bg-white px-3 py-1">Подробнее</span>
-                        </div>
+                    <!-- ОТКРЫТ: Nu i Che (ТЕПЕРЬ ДОСТУПЕН) -->
+                    <a href="nuiche.html" data-project="nuiche" class="nav-link related-project-card">
                         <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39518_rwxdzz.png" alt="Превью Nu i Che" class="w-full h-auto">
                         <div class="p-4 text-left">
                             <span class="text-lg font-medium tracking-custom-tight">Nu i Che</span>
                             <p class="text-xs text-white/50">Web Design</p>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- ОТКРЫТ: Nobee -->
                     <a href="nobee.html" data-project="nobee" class="nav-link related-project-card">
