@@ -672,8 +672,28 @@
                 animate();
             }
 
+            // НОВЫЙ IntersectionObserver для активации при прокрутке (для мобильных/планшетов)
+            const magicScrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const card = entry.target;
+                    // Активируем анимацию, как только 80% элемента становится видимым
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        activate(card);
+                        magicScrollObserver.unobserve(card); // Останавливаем наблюдение после первого срабатывания
+                    }
+                });
+            }, {
+                threshold: 0.8 // Срабатывает, когда 80% элемента видно
+            });
+
             document.querySelectorAll('.magic-lock-wrapper')
-                .forEach(c => c.addEventListener('pointerenter', () => activate(c), { passive: true }));
+                .forEach(c => {
+                    // 1. Активация по наведению (для десктопа)
+                    c.addEventListener('pointerenter', () => activate(c), { passive: true });
+                    
+                    // 2. Активация по скроллу (для мобильных/планшетов)
+                    magicScrollObserver.observe(c);
+                });
         })();
 
         // === ГЛОБАЛЬНЫЙ ЗАПУСК ===
