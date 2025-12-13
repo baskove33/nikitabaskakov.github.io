@@ -6,20 +6,20 @@
     <title>Баскаков Никита - Портфолио</title>
     <!-- Подключение Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <style>
         /* Настройка шрифта Inter (резервный) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        /* TT Neoris */
+        /* TT Neoris: ВСТАВЛЕН REGULAR WOFF и WOFF2 */
         @font-face {
             font-family: 'TT Neoris';
             src: url('https://res.cloudinary.com/dt79npeea/raw/upload/v1764859192/TT_Neoris_Regular_bb9kfp.woff2') format('woff2'),
                  url('https://res.cloudinary.com/dt79npeea/raw/upload/v1764859114/TT_Neoris_Regular_mj4jee.woff') format('woff');
-            font-weight: 400; 
+            font-weight: 400; /* Regular */
             font-style: normal;
         }
 
+        /* CUSTOM TRACKING (-0.04em = -4%) */
         .tracking-custom-tight {
             letter-spacing: -0.04em;
         }
@@ -31,128 +31,68 @@
             background-color: #000;
         }
         
-        @media (min-width: 1024px) { 
-            body {
-                overflow: hidden;
-            }
-            #scroll-panel::-webkit-scrollbar {
-                display: none; 
-            }
-            #scroll-panel {
-                -ms-overflow-style: none; 
-                scrollbar-width: none; 
-            }
+        @media (min-width: 1024px) {
+            body { overflow: hidden; }
+            #scroll-panel::-webkit-scrollbar { display: none; }
+            #scroll-panel { -ms-overflow-style: none; scrollbar-width: none; }
         }
         
         /* === ПРЕЛОАДЕР === */
         #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            opacity: 1;
-            z-index: 9999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; opacity: 1; z-index: 9999;
             transition: opacity 0.5s ease-out;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             pointer-events: none;
         }
-
         .pulse-loader span {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            margin: 0 5px;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0.5;
+            display: inline-block; width: 10px; height: 10px; margin: 0 5px;
+            background: #fff; border-radius: 50%; opacity: 0.5;
             animation: pulse 1.2s infinite ease-in-out;
         }
-
         .pulse-loader span:nth-child(2) { animation-delay: 0.2s; }
         .pulse-loader span:nth-child(3) { animation-delay: 0.4s; }
-
         @keyframes pulse {
             0%, 80%, 100% { opacity: 0.5; transform: scale(1); }
             40% { opacity: 1; transform: scale(1.2); }
         }
         
-        /* Стили панелей и текста */
+        /* Стили */
         .left-side-bg {
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.2)),
+            background-image: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.2)),
                 url('https://res.cloudinary.com/dt79npeea/image/upload/v1764843336/photo_2025-12-04_13-05-55_pwtepu.jpg');
-            background-size: cover;
-            background-position: center 20%;
+            background-size: cover; background-position: center 20%;
         }
 
         .typing-text {
             border-right: 2px solid rgba(255, 255, 255, 0.7); 
-            white-space: nowrap; 
-            overflow: hidden; 
-            height: 1.5em; 
-            display: inline-block; 
-            max-width: 100%; 
+            white-space: nowrap; overflow: hidden; 
+            height: 1.5em; display: inline-block; max-width: 100%;
         }
         
-        /* Анимация скролла */
         .scroll-animated-element {
             transition: transform 0.1s linear, filter 0.1s linear, opacity 0.1s linear;
-            transform-origin: center center;
             will-change: transform, filter, opacity;
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            -webkit-font-smoothing: antialiased;
+            transform: translateZ(0); -webkit-font-smoothing: antialiased;
         }
 
-        .reveal-on-scroll {
-            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-        }
+        .reveal-on-scroll { transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
 
-        .portfolio-item {  
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        .portfolio-item { transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease; }
+        .portfolio-item:hover { filter: none; }
         
-        #welcome-message {
-            min-height: calc(100vh - 4rem); 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center;
+        #welcome-message { min-height: calc(100vh - 4rem); display: flex; flex-direction: column; justify-content: center; }
+
+        /* === LOCKED OVERLAY (Обычный) === */
+        .locked-overlay {
+            position: absolute; inset: 0; background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(2px); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; opacity: 0;
+            transition: opacity 0.3s ease; z-index: 20;
         }
-
-        /* === LOCKED OVERLAY (Статика) === */
-        .locked-overlay-static {
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.4);
-            /* Оптимизация: убрал тяжелый backdrop-filter для заблокированных карточек, оставил только прозрачность */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 20;
-        }
-
-        .portfolio-item:hover .locked-overlay-static {
-            opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .locked-overlay-static {
-                opacity: 1;
-                background: rgba(255, 255, 255, 0.2);
-            }
-        }
-
-        .lock-icon-static { animation: wobble 2s infinite ease-in-out; }
-
+        .portfolio-item:hover .locked-overlay { opacity: 1; }
+        @media (max-width: 768px) { .locked-overlay { opacity: 1; background: rgba(255, 255, 255, 0.2); } }
+        .lock-icon { animation: wobble 2s infinite ease-in-out; }
         @keyframes wobble {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(-5deg); }
@@ -160,104 +100,56 @@
         }
 
         /* === POPUP === */
-        #lock-popup {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        #lock-popup.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .popup-content {
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-        #lock-popup.active .popup-content {
-            transform: scale(1);
-        }
+        #lock-popup { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        #lock-popup.active { opacity: 1; pointer-events: all; }
+        .popup-content { transform: scale(0.95); transition: transform 0.3s ease; }
+        #lock-popup.active .popup-content { transform: scale(1); }
 
         /* ========================================= */
-        /* === MAGIC LOCK STYLES (OPTIMIZED) === */
+        /* === MAGIC LOCK STYLES (ОПТИМИЗАЦИЯ) === */
         /* ========================================= */
-
         .magic-lock-wrapper {
-            position: relative;
-            display: block;
-            overflow: hidden; 
-            /* Оптимизация: сообщаем браузеру о изменениях */
-            will-change: transform; 
+            position: relative; display: block;
+            /* УДАЛЕНО overflow: hidden; чтобы частицы вылетали */
+            contain: layout paint style; 
         }
 
-        .overlay-panel {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6); 
-            /* Оптимизация: Блюр может быть тяжелым, если лагает - можно уменьшить px или убрать */
-            backdrop-filter: blur(4px); 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 30; 
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
-            
-            transition: 
-                opacity 0.6s ease 0.4s,
-                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.6s step-end 0.4s;
+        /* Оверлей с замком */
+        .magic-lock-wrapper .overlay-panel {
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.7); /* Чуть темнее для контраста */
+            display: flex; align-items: center; justify-content: center;
+            z-index: 30;
+            opacity: 1; visibility: visible;
+            transition: opacity 0.5s ease 0.2s, visibility 0.5s step-end 0.2s; /* Плавное исчезновение */
         }
 
+        /* Состояние "Разблокировано" */
         .magic-lock-wrapper.unlocked .overlay-panel {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(1.05);
-            backdrop-filter: none; /* Отключаем блюр при скрытии для производительности */
+            opacity: 0; visibility: hidden; pointer-events: none;
         }
 
-        .lock-svg {
-            width: 64px;
-            height: 64px;
-            overflow: visible;
-        }
-
+        /* SVG Замок */
+        .lock-svg { width: 64px; height: 64px; overflow: visible; }
         .shackle {
-            fill: none;
-            stroke: #fff;
-            stroke-width: 4;
-            stroke-linecap: round;
+            fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round;
             transform-origin: 22% 40%;
-            transition: 
-                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-                stroke 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
-        .body {
-            fill: #fff;
-            transition: fill 0.3s ease;
-        }
-
+        
+        /* Анимация дужки при наведении (до исчезновения) */
         .magic-lock-wrapper.active .shackle {
-            transform: translateY(-8px) rotate(35deg); 
-            stroke: #fff;
+            transform: translateY(-10px) rotate(35deg); 
         }
 
-        .magic-lock-wrapper.active .body {
-            fill: #fff;
-        }
-
+        /* Канвас для частиц: СДЕЛАН КРУПНЕЕ ДЛЯ ВОЗДУШНОГО ЭФФЕКТА */
         canvas.particles {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
+            position: absolute; 
+            inset: -50%; /* Растягиваем канвас на 200% от центра */
+            width: 200%; 
             height: 200%;
-            pointer-events: none;
-            z-index: 40; 
+            pointer-events: none; z-index: 40;
         }
-
     </style>
 </head>
 <body class="bg-black text-white antialiased">
@@ -281,7 +173,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             </div>
             <h3 id="popup-title" class="text-xl font-bold mb-3 tracking-custom-tight">История кейса</h3>
-            <p id="popup-message" class="text-sm text-gray-600 mb-8 leading-relaxed">Я еще не рассказал историю об этом кейсе.</p>
+            <p id="popup-message" class="text-sm text-gray-600 mb-8 leading-relaxed">...</p>
             <a href="https://www.threads.net/@baskove33" target="_blank" class="block w-full bg-black text-white font-medium py-4 hover:bg-gray-800 transition duration-300">Перейти в Threads</a>
         </div>
     </div>
@@ -308,7 +200,7 @@
         <div id="scroll-panel" class="w-full lg:w-1/2 max-w-full lg:h-screen lg:p-12 p-4 sm:p-10 flex justify-center lg:overflow-y-auto scroll-mask-container">
             <div id="right-scroll-container" class="w-full lg:max-w-[365px] space-y-5"> 
 
-                <!-- 1. ПРИВЕТСТВИЕ -->
+                <!-- Приветствие -->
                 <div id="welcome-message" class="bg-black shadow-lg p-8 reveal-on-scroll scroll-animated-element text-center">
                     <h3 class="text-5xl font-medium text-white mb-4 tracking-custom-tight">Приветствую!</h3>
                     <div class="flex justify-center">
@@ -316,7 +208,7 @@
                     </div>
                 </div>
 
-                <!-- 2. МОБИЛЬНОЕ ФОТО -->
+                <!-- Мобильное фото -->
                 <div class="block lg:hidden w-full h-[500px] left-side-bg relative flex flex-col justify-between p-5 reveal-on-scroll scroll-animated-element shadow-2xl">
                     <div class="absolute inset-0 bg-gradient-to-b from-black/00 to-black/20 pointer-events-none"></div>
                     <nav class="flex justify-between text-xs text-white/60 tracking-wider relative z-10">
@@ -331,35 +223,36 @@
                     </div>
                 </div>
                 
-                <!-- 3. ИНФОРМАЦИЯ -->
+                <!-- Информация -->
                 <div class="bg-white shadow-2xl p-5 reveal-on-scroll scroll-animated-element">
                     <h1 class="text-[36px] font-medium text-gray-900 tracking-custom-tight mb-2 leading-none">Баскаков Никита</h1>
                     <p class="text-base text-gray-600 mb-20 font-light">Портфолио веб-дизайнера</p>
                     <p class="text-sm text-gray-400 leading-relaxed">и просто хорошего человека</p>
                 </div>
 
-                <!-- 4. ОПЫТ -->
+                <!-- Опыт -->
                 <div class="bg-white shadow-lg p-5 flex justify-between items-center reveal-on-scroll scroll-animated-element">
                     <span class="text-sm text-gray-600">Опыт:</span>
                     <span class="text-xl font-medium text-gray-900"> +4 года</span>
                 </div>
 
-                <!-- ПОРТФОЛИО -->
+                <!-- Заголовок портфолио -->
                 <div id="portfolio-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll scroll-animated-element">
                     <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Портфолио</h2>
                 </div>
 
+                <!-- ПРОЕКТЫ -->
                 <div class="grid gap-5">
                     
-                    <!-- ЗАБЛОКИРОВАН: DYOR 5 -->
+                    <!-- 1. DYOR 5 (LOCKED) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element relative group">
                         <div onclick="openLockedPopup('story')" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none relative">
-                            <div class="locked-overlay-static">
-                                <svg class="lock-icon-static text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <div class="locked-overlay">
+                                <svg class="lock-icon text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                 <span class="text-xs font-medium text-black uppercase tracking-widest bg-white px-3 py-1">Узнать подробнее</span>
                             </div>
                             <div class="w-full h-80 flex items-center justify-center">
-                                <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842242/Rectangle_39524_y5ycpn.png" alt="DYOR 5" class="w-full h-full object-cover">
+                                <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842242/Rectangle_39524_y5ycpn.png" class="w-full h-full object-cover">
                             </div>
                             <div class="bg-white p-5 flex justify-between items-center">
                                 <div class="text-lg font-medium text-gray-900 tracking-custom-tight">DYOR 5</div>
@@ -368,51 +261,44 @@
                         </div>
                     </div>
 
-                    <!-- ОТКРЫТ: Nu i Che -->
+                    <!-- 2. Nu i Che (UNLOCKED + MAGIC) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
-                         <a href="nuiche.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl cursor-pointer rounded-none relative block" onmouseenter="activateLock(this)">
-                            
-                            <!-- Оверлей с Замком -->
+                         <a href="nuiche.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
+                            <!-- Оверлей с замком -->
                             <div class="overlay-panel">
                                 <svg class="lock-svg" viewBox="0 0 24 24">
-                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    <path class="body" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z" />
-                                    <circle class="body" cx="12" cy="16" r="1.5" fill="#151515"/>
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
                                 </svg>
                             </div>
-
-                            <!-- Частицы -->
+                            <!-- Канвас -->
                             <canvas class="particles"></canvas>
-
                             <!-- Контент -->
-                            <div class="project-content relative z-0">
-                                <div class="w-full h-80 flex items-center justify-center">
-                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39518_rwxdzz.png" alt="Nu i Che" class="w-full h-full object-cover">
-                                </div>
-                                <div class="bg-white p-5 flex justify-between items-center">
-                                    <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Nu i Che</div>
-                                    <div class="text-right text-xs text-gray-500 tracking-wider uppercase">Web Design</div>
+                            <div class="relative z-0">
+                                <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39518_rwxdzz.png" class="w-full h-80 object-cover">
+                                <div class="bg-white p-5 flex justify-between">
+                                    <div class="text-lg font-medium text-gray-900">Nu i Che</div>
+                                    <div class="text-xs text-gray-500 uppercase">Web Design</div>
                                 </div>
                             </div>
                         </a>
                     </div>
 
-                    <!-- ОТКРЫТ: Nobee -->
+                    <!-- 3. Nobee (UNLOCKED + MAGIC) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
-                        <a href="nobee.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl cursor-pointer rounded-none relative block" onmouseenter="activateLock(this)">
-                            
-                            <div class="overlay-panel">
+                        <a href="nobee.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
+                             <div class="overlay-panel">
                                 <svg class="lock-svg" viewBox="0 0 24 24">
-                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    <path class="body" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z" />
-                                    <circle class="body" cx="12" cy="16" r="1.5" fill="#151515"/>
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
                                 </svg>
                             </div>
                             <canvas class="particles"></canvas>
-
-                            <div class="project-content relative z-0">
+                            <div class="relative z-0">
                                 <div class="w-full h-80 flex items-center justify-center">
-                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39521_ck13rv.png" alt="Nobee" class="w-full h-full object-cover">
+                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39521_ck13rv.png" class="w-full h-full object-cover">
                                 </div>
                                 <div class="bg-white p-5 flex justify-between items-center">
                                     <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Nobee</div>
@@ -422,22 +308,20 @@
                         </a>
                     </div>
 
-                    <!-- ОТКРЫТ: 9 circles of Hell -->
+                    <!-- 4. 9 circles of Hell (UNLOCKED + MAGIC) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
-                        <a href="circles.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl cursor-pointer rounded-none relative block" onmouseenter="activateLock(this)">
-                             
+                        <a href="circles.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
                              <div class="overlay-panel">
                                 <svg class="lock-svg" viewBox="0 0 24 24">
-                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    <path class="body" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z" />
-                                    <circle class="body" cx="12" cy="16" r="1.5" fill="#151515"/>
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
                                 </svg>
                             </div>
                             <canvas class="particles"></canvas>
-
-                            <div class="project-content relative z-0">
+                            <div class="relative z-0">
                                 <div class="w-full h-80 flex items-center justify-center">
-                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" alt="9 circles" class="w-full h-full object-cover">
+                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" class="w-full h-full object-cover">
                                 </div>
                                 <div class="bg-white p-5 flex justify-between items-center">
                                     <div class="text-lg font-medium text-gray-900 tracking-custom-tight">9 circles of Hell</div>
@@ -447,15 +331,15 @@
                         </a>
                     </div>
 
-                    <!-- ЗАБЛОКИРОВАН: Din Drone -->
+                    <!-- 5. Din Drone (LOCKED) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element relative group">
                         <div onclick="openLockedPopup('story')" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none relative">
-                             <div class="locked-overlay-static">
-                                <svg class="lock-icon-static text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                             <div class="locked-overlay">
+                                <svg class="lock-icon text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                 <span class="text-xs font-medium text-black uppercase tracking-widest bg-white px-3 py-1">Узнать подробнее</span>
                             </div>
                             <div class="w-full h-80 flex items-center justify-center">
-                                <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" alt="Din Drone" class="w-full h-full object-cover">
+                                <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" class="w-full h-full object-cover">
                             </div>
                             <div class="bg-white p-5 flex justify-between items-center">
                                 <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Din Drone</div>
@@ -464,22 +348,20 @@
                         </div>
                     </div>
                     
-                    <!-- ОТКРЫТ: Turbofish -->
+                    <!-- 6. Turbofish (UNLOCKED + MAGIC) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
-                         <a href="turbofish.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl cursor-pointer rounded-none relative block" onmouseenter="activateLock(this)">
-                             
+                         <a href="turbofish.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
                              <div class="overlay-panel">
                                 <svg class="lock-svg" viewBox="0 0 24 24">
-                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    <path class="body" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z" />
-                                    <circle class="body" cx="12" cy="16" r="1.5" fill="#151515"/>
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
                                 </svg>
                             </div>
                             <canvas class="particles"></canvas>
-
-                            <div class="project-content relative z-0">
+                            <div class="relative z-0">
                                 <div class="w-full h-80 flex items-center justify-center">
-                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39520_j4cgl1.png" alt="Turbofish" class="w-full h-full object-cover">
+                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39520_j4cgl1.png" class="w-full h-full object-cover">
                                 </div>
                                 <div class="bg-white p-5 flex justify-between items-center">
                                     <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Turbofish</div>
@@ -489,11 +371,11 @@
                         </a>
                     </div>
 
-                      <!-- НОВЫЙ КЕЙС 1 (СЕКРЕТНЫЙ) -->
-                      <div class="project-card-wrapper reveal-on-scroll scroll-animated-element relative group">
+                    <!-- Секретные проекты (LOCKED) -->
+                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element relative group">
                         <div onclick="openLockedPopup('coming_soon')" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none relative">
-                             <div class="locked-overlay-static" style="opacity: 1; background: rgba(255, 255, 255, 0.1);">
-                                <svg class="lock-icon-static text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                             <div class="locked-overlay" style="opacity: 1; background: rgba(255, 255, 255, 0.1);">
+                                <svg class="lock-icon text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                 <span class="text-xs font-medium text-black uppercase tracking-widest bg-white px-3 py-1">Скоро</span>
                             </div>
                             <div class="w-full h-80 flex items-center justify-center bg-gray-100 overflow-hidden">
@@ -506,11 +388,10 @@
                         </div>
                     </div>
 
-                    <!-- НОВЫЙ КЕЙС 2 (СЕКРЕТНЫЙ) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element relative group">
                         <div onclick="openLockedPopup('coming_soon')" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none relative">
-                             <div class="locked-overlay-static" style="opacity: 1; background: rgba(255, 255, 255, 0.1);">
-                                <svg class="lock-icon-static text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                             <div class="locked-overlay" style="opacity: 1; background: rgba(255, 255, 255, 0.1);">
+                                <svg class="lock-icon text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                 <span class="text-xs font-medium text-black uppercase tracking-widest bg-white px-3 py-1">Скоро</span>
                             </div>
                             <div class="w-full h-80 flex items-center justify-center bg-gray-100 overflow-hidden">
@@ -522,16 +403,13 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                <!-- Заголовок стоимости -->
+                <!-- Стоимость -->
                 <div id="pricing-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll scroll-animated-element">
                     <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Стоимость</h2>
                 </div>
-
                 <div class="space-y-5">
-                    <!-- Дизайн сайта (Figma) -->
                     <div class="bg-white shadow-xl p-5 reveal-on-scroll scroll-animated-element">
                         <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Дизайн сайта (Figma)</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-8">Одностраничный сайт, промо-страница, посадочная страница для продукта или услуги. Только дизайн - без сборки.</p>
@@ -546,8 +424,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Сайт под ключ (Figma + Tilda) -->
                     <div class="bg-white shadow-xl p-5 reveal-on-scroll scroll-animated-element">
                         <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Сайт под ключ (Figma + Tilda)</h3>
                         <p class="text-sm text-gray-600 leading-relaxed mb-8">Одностраничный сайт, промо-страница, посадочная страница для продукта или услуги. Полный цикл: дизайн и сборка.</p>
@@ -562,11 +438,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Другие продукты -->
                     <div class="bg-white shadow-xl p-5 reveal-on-scroll scroll-animated-element">
                         <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Другие продукты?</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-8">Графические задачи, не связанные напрямую с сайтами: баннеры, презентации, соцсети и другое. Обсудим задачу и предложу решение.</p>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-8">Графические задачи, не связанные напрямую с сайтами: баннеры, презентации, соцсети и другое.</p>
                         <div class="flex flex-col space-y-4">
                             <div class="bg-gray-100 p-4 flex justify-between items-center">
                                 <span class="text-sm text-gray-600">По договоренности</span>
@@ -610,7 +484,7 @@
             }
         }
 
-        // === ПРЕЛОАДЕР ===
+        // === ПРЕЛОАДЕР И ПЛАВНЫЕ ПЕРЕХОДЫ ===
         const preloader = document.getElementById('preloader');
 
         function hidePreloader() {
@@ -619,9 +493,7 @@
                 setTimeout(() => {
                     preloader.style.zIndex = '-1';
                     preloader.style.pointerEvents = 'none';
-                    if (typingOutput) {
-                        typeText();
-                    }
+                    if (typingOutput) typeText();
                 }, 500);
             }
         }
@@ -629,11 +501,7 @@
         function showPreloader(e) {
             const target = e.currentTarget;
             const href = target.getAttribute('href');
-            
-            if (href && (href.startsWith('#') || target.getAttribute('target') === '_blank')) {
-                return;
-            }
-
+            if (href && (href.startsWith('#') || target.getAttribute('target') === '_blank')) return;
             preloader.style.opacity = '1';
             preloader.style.zIndex = '9999';
             preloader.style.pointerEvents = 'all';
@@ -641,7 +509,7 @@
             setTimeout(() => { window.location.href = href; }, 500);
         }
 
-        // === АНИМАЦИЯ СКРОЛЛА ===
+        // === АНИМАЦИЯ КАРТОЧЕК ПРИ СКРОЛЛЕ (СУЖЕНИЕ/БЛЮР) ===
         const scrollContainer = window.innerWidth >= 1024 ? document.getElementById('scroll-panel') : window; 
         const scrollAnimatedElements = document.querySelectorAll('.scroll-animated-element');
         const maxScaleReduction = 0.04;
@@ -664,11 +532,9 @@
                 scrollAnimatedElements.forEach(element => {
                     const rect = element.getBoundingClientRect();
                     let elementCenter;
-                    if (scrollContainer === window) {
-                        elementCenter = rect.top + (rect.height / 2);
-                    } else {
-                        elementCenter = rect.top + (rect.height / 2) - containerTop;
-                    }
+                    if (scrollContainer === window) elementCenter = rect.top + (rect.height / 2);
+                    else elementCenter = rect.top + (rect.height / 2) - containerTop;
+
                     const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
                     const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
                     const scale = 1 - (normalizedDistance * maxScaleReduction);
@@ -681,20 +547,12 @@
                 });
                 ticking = false;
             };
-
-            const onScroll = () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(updateAnimations);
-                    ticking = true;
-                }
-            };
-            
+            const onScroll = () => { if (!ticking) { window.requestAnimationFrame(updateAnimations); ticking = true; } };
             scrollContainer.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('load', onScroll);
             window.addEventListener('resize', () => { if (window.innerWidth >= 1024) onScroll(); });
         }
 
-        // === REVEAL-ON-SCROLL ===
         const initialObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const element = entry.target;
@@ -706,7 +564,7 @@
                     initialObserver.unobserve(element);
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.5 }); // ИЗМЕНЕНО: 0.1 -> 0.5 для центрирования появления на мобильных
 
         // === POPUP ===
         const popup = document.getElementById('lock-popup');
@@ -727,158 +585,107 @@
         function closePopup() { popup.classList.remove('active'); }
         popup.addEventListener('click', (e) => { if (e.target === popup) closePopup(); });
 
-        // === MAGIC LOCK LOGIC (JS) ===
-        function activateLock(wrapper) {
-            // Если уже разблокировано, ничего не делаем
-            if (wrapper.classList.contains('active')) return;
+        // ===========================================
+        // === ОПТИМИЗИРОВАННАЯ МАГИЯ (MAGIC LOCK) ===
+        // ===========================================
+        (() => {
+            const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
 
-            // 1. Запускаем анимацию замка
-            wrapper.classList.add('active');
+            function activate(card) {
+                if (card.classList.contains('unlocked')) return;
+                if (card.classList.contains('active')) return;
 
-            // 2. Запускаем магию (частицы)
-            runMagicBurst(wrapper);
+                card.classList.add('active');
+                
+                runMagicBurst(card);
 
-            // 3. Через 600мс убираем оверлей и блюр
-            setTimeout(() => {
-                wrapper.classList.add('unlocked');
-            }, 600);
-        }
-
-        function runMagicBurst(wrapper) {
-            const canvas = wrapper.querySelector('canvas.particles');
-            // Проверка на случай отсутствия canvas
-            if (!canvas) return; 
-
-            const ctx = canvas.getContext('2d');
-            
-            // Важно: берем размер обертки, чтобы канвас был правильного размера
-            const rect = wrapper.getBoundingClientRect();
-            canvas.width = rect.width * 2; // High DPI
-            canvas.height = rect.height * 2;
-
-            let particles = [];
-            let isEmitting = true;
-            
-            // Эмиссия частиц длится 1 секунду
-            setTimeout(() => { isEmitting = false; }, 1000);
-
-            // Начальный взрыв
-            for (let i = 0; i < 60; i++) {
-                particles.push(createParticle(canvas.width, canvas.height, true));
+                setTimeout(() => {
+                    card.classList.add('unlocked');
+                }, 400);
             }
 
-            function createParticle(w, h, isExplosion = false) {
-                const cx = w / 2;
-                const cy = h / 2;
+            function runMagicBurst(card) {
+                const c = card.querySelector('canvas.particles');
+                if (!c) return;
                 
-                const blurLevel = Math.random();
-                let blur = 0;
-                if (blurLevel > 0.8) blur = 2; 
-                else if (blurLevel > 0.5) blur = 1;
+                const ctx = c.getContext('2d', { willReadFrequently: false });
                 
-                // Скорость частиц
-                let speedMult = isExplosion ? 3.5 : 2;
+                // Размеры канваса (который в 200% от карточки)
+                const rect = c.getBoundingClientRect();
+                c.width = rect.width * DPR;
+                c.height = rect.height * DPR;
 
-                return {
-                    x: cx + (Math.random() - 0.5) * 20, 
-                    y: cy, 
-                    vx: (Math.random() - 0.5) * speedMult * 2, 
-                    vy: (Math.random() - 1.2) * speedMult * 2, 
-                    size: Math.random() * 3 + 0.5,
-                    alpha: 1, 
-                    decay: Math.random() * 0.02 + 0.005,
-                    blur: blur,
-                    color: blur > 0 ? `rgba(220, 220, 255,` : `rgba(255, 255, 255,`
-                };
-            }
+                let particles = [];
+                // Центр карточки в координатах 200%-канваса находится в его центре (50% от 200%)
+                const cx = c.width / 2;
+                const cy = c.height / 2;
 
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const spreadFactor = 12 * DPR; // Увеличение скорости разлета
 
-                if (particles.length === 0 && !isEmitting) return;
-
-                if (isEmitting) {
-                    particles.push(createParticle(canvas.width, canvas.height));
-                    particles.push(createParticle(canvas.width, canvas.height));
+                for (let i = 0; i < 45; i++) { // Увеличение количества частиц
+                    particles.push({
+                        x: cx,
+                        y: cy,
+                        vx: (Math.random() - 0.5) * spreadFactor, // Больший разлет по X
+                        vy: (Math.random() * -1) * spreadFactor - 2 * DPR, // Сильный разлет вверх
+                        size: (Math.random() * 3 + 1.5) * DPR, // Увеличенный размер
+                        alpha: 1,
+                        decay: Math.random() * 0.02 + 0.015 // Скорость исчезновения
+                    });
                 }
 
-                // Сортировка для правильного рендеринга блюра (опционально, но красиво)
-                particles.sort((a, b) => b.blur - a.blur);
+                function animate() {
+                    if (particles.length === 0) {
+                        ctx.clearRect(0, 0, c.width, c.height);
+                        return; 
+                    }
 
-                let currentBlur = -1;
-
-                for (let i = 0; i < particles.length; i++) {
-                    let p = particles[i];
+                    ctx.clearRect(0, 0, c.width, c.height);
+                    ctx.fillStyle = '#fff';
+                    ctx.globalCompositeOperation = 'lighter'; // Эффект свечения
                     
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vx *= 0.96; 
-                    p.vy *= 0.96; 
-                    p.alpha -= p.decay;
+                    for (let i = 0; i < particles.length; i++) {
+                        let p = particles[i];
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.25 * DPR; // Гравитация
+                        p.alpha -= p.decay;
 
-                    if (p.alpha <= 0) {
-                        particles.splice(i, 1);
-                        i--;
-                        continue;
+                        if (p.alpha <= 0) {
+                            particles.splice(i, 1);
+                            i--;
+                            continue;
+                        }
+
+                        ctx.globalAlpha = p.alpha;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
                     }
-
-                    // Оптимизация переключения фильтра
-                    if (p.blur !== currentBlur) {
-                        ctx.filter = `blur(${p.blur}px)`;
-                        currentBlur = p.blur;
-                    }
-
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     
-                    if (p.blur === 0) {
-                        ctx.shadowBlur = 10;
-                        ctx.shadowColor = "white";
-                    } else {
-                        ctx.shadowBlur = 0;
-                    }
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.globalAlpha = 1;
 
-                    ctx.fillStyle = p.color + p.alpha + ')';
-                    ctx.fill();
+                    requestAnimationFrame(animate);
                 }
                 
-                ctx.filter = 'none';
-                ctx.shadowBlur = 0;
-
-                requestAnimationFrame(animate);
+                animate();
             }
 
-            animate();
-        }
+            document.querySelectorAll('.magic-lock-wrapper')
+                .forEach(c => c.addEventListener('pointerenter', () => activate(c), { passive: true }));
+        })();
 
-        // === GLOBAL INIT ===
+        // === ГЛОБАЛЬНЫЙ ЗАПУСК ===
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('a[href^="index.html"], a[href$=".html"]').forEach(link => {
-                if (link.getAttribute('target') !== '_blank') {
-                    link.addEventListener('click', showPreloader);
-                }
+                if (link.getAttribute('target') !== '_blank') link.addEventListener('click', showPreloader);
             });
+            
             scrollAnimatedElements.forEach(el => { 
                 el.classList.add('opacity-0', 'translate-y-4', 'transition-all', 'duration-700', 'ease-out');
                 initialObserver.observe(el);
             });
-
-             // === MOBILE SCROLL TRIGGER (Intersection Observer) ===
-            if (window.innerWidth < 1024) {
-                const magicObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            activateLock(entry.target);
-                            magicObserver.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.4 });
-
-                const magicCards = document.querySelectorAll('.magic-lock-wrapper');
-                magicCards.forEach(card => {
-                    magicObserver.observe(card);
-                });
-            }
         });
 
         window.addEventListener('load', hidePreloader);
