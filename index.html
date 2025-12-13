@@ -24,6 +24,13 @@
             letter-spacing: -0.04em;
         }
 
+        /* ИСПРАВЛЕНИЕ: ГЛОБАЛЬНЫЙ ЗАПРЕТ ГОРИЗОНТАЛЬНОГО СКРОЛЛА */
+        html, body {
+            overflow-x: hidden; /* КРИТИЧНО: Убирает скролл вправо */
+            width: 100%;
+            max-width: 100%;
+        }
+
         body {
             font-family: 'TT Neoris', 'Inter', sans-serif;
             scroll-behavior: smooth;
@@ -32,7 +39,7 @@
         }
         
         @media (min-width: 1024px) {
-            body { overflow: hidden; }
+            body { overflow: hidden; } /* На десктопе вообще скролл скрыт (свой скроллбар) */
             #scroll-panel::-webkit-scrollbar { display: none; }
             #scroll-panel { -ms-overflow-style: none; scrollbar-width: none; }
         }
