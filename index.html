@@ -24,13 +24,6 @@
             letter-spacing: -0.04em;
         }
 
-        /* ИСПРАВЛЕНИЕ: ГЛОБАЛЬНЫЙ ЗАПРЕТ ГОРИЗОНТАЛЬНОГО СКРОЛЛА */
-        html, body {
-            overflow-x: hidden; /* КРИТИЧНО: Убирает скролл вправо */
-            width: 100%;
-            max-width: 100%;
-        }
-
         body {
             font-family: 'TT Neoris', 'Inter', sans-serif;
             scroll-behavior: smooth;
@@ -39,7 +32,7 @@
         }
         
         @media (min-width: 1024px) {
-            body { overflow: hidden; } /* На десктопе вообще скролл скрыт (свой скроллбар) */
+            body { overflow: hidden; }
             #scroll-panel::-webkit-scrollbar { display: none; }
             #scroll-panel { -ms-overflow-style: none; scrollbar-width: none; }
         }
@@ -90,7 +83,7 @@
         
         #welcome-message { min-height: calc(100vh - 4rem); display: flex; flex-direction: column; justify-content: center; }
 
-        /* === LOCKED OVERLAY (Обычный - для закрытых кейсов) === */
+        /* === LOCKED OVERLAY (Обычный) === */
         .locked-overlay {
             position: absolute; inset: 0; background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(2px); display: flex; flex-direction: column;
@@ -113,26 +106,22 @@
         #lock-popup.active .popup-content { transform: scale(1); }
 
         /* ========================================= */
-        /* === MAGIC LOCK STYLES (ОПТИМИЗИРОВАНО) === */
+        /* === MAGIC LOCK STYLES (ОПТИМИЗАЦИЯ) === */
         /* ========================================= */
         .magic-lock-wrapper {
-            position: relative; 
-            display: block;
-            z-index: 10;
-            overflow: visible; /* Разрешаем частицам вылетать */
+            position: relative; display: block;
+            /* УДАЛЕНО overflow: hidden; чтобы частицы вылетали */
+            contain: layout paint style; 
         }
 
         /* Оверлей с замком */
         .magic-lock-wrapper .overlay-panel {
             position: absolute; inset: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.7); /* Чуть темнее для контраста */
             display: flex; align-items: center; justify-content: center;
             z-index: 30;
             opacity: 1; visibility: visible;
-            /* Исчезновение оверлея */
-            transition: 
-                opacity 0.8s ease 0.6s, 
-                visibility 0.8s step-end 0.6s; 
+            transition: opacity 0.5s ease 0.2s, visibility 0.5s step-end 0.2s; /* Плавное исчезновение */
         }
 
         /* Состояние "Разблокировано" */
@@ -142,29 +131,23 @@
 
         /* SVG Замок */
         .lock-svg { width: 64px; height: 64px; overflow: visible; }
-        
-        /* Дужка */
         .shackle {
-            fill: none; 
-            stroke: #fff; 
-            stroke-width: 4; 
-            stroke-linecap: round;
+            fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round;
             transform-origin: 22% 40%;
-            /* Плавная анимация открытия */
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-            filter: drop-shadow(0 0 1px rgba(255,255,255,0.8));
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 0 1px rgba(255,255,255,0.8)); /* Добавлена легкая тень для свечения */
         }
         
-        /* АНИМАЦИЯ ПРИ АКТИВАЦИИ */
+        /* Анимация дужки при наведении (до исчезновения) */
         .magic-lock-wrapper.active .shackle {
             transform: translateY(-10px) rotate(35deg); 
-            filter: drop-shadow(0 0 5px rgba(255,255,255,1));
+            filter: drop-shadow(0 0 5px rgba(255,255,255,1)); /* Усиленная тень при активации */
         }
 
-        /* Канвас для частиц */
+        /* Канвас для частиц: СДЕЛАН КРУПНЕЕ ДЛЯ ВОЗДУШНОГО ЭФФЕКТА */
         canvas.particles {
             position: absolute; 
-            inset: -50%; 
+            inset: -50%; /* Растягиваем канвас на 200% от центра */
             width: 200%; 
             height: 200%;
             pointer-events: none; z-index: 40;
@@ -266,7 +249,7 @@
                     <!-- 1. DYOR 5 (LOCKED) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element relative group">
                         <div onclick="openLockedPopup('story')" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none relative">
-                            <div class="locked-overlay">
+                             <div class="locked-overlay">
                                 <svg class="lock-icon text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                 <span class="text-xs font-medium text-black uppercase tracking-widest bg-white px-3 py-1">Узнать подробнее</span>
                             </div>
@@ -285,10 +268,10 @@
                          <a href="nuiche.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
                             <!-- Оверлей с замком -->
                             <div class="overlay-panel">
-                                <!-- ЗАМОК БЕЗ ОТВЕРСТИЯ -->
                                 <svg class="lock-svg" viewBox="0 0 24 24">
-                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z" />
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
                                 </svg>
                             </div>
                             <!-- Канвас -->
@@ -308,10 +291,10 @@
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                         <a href="nobee.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
                              <div class="overlay-panel">
-                                <!-- ЗАМОК БЕЗ ОТВЕРСТИЯ -->
                                 <svg class="lock-svg" viewBox="0 0 24 24">
-                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z" />
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
                                 </svg>
                             </div>
                             <canvas class="particles"></canvas>
@@ -331,19 +314,16 @@
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                         <a href="circles.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
                              <div class="overlay-panel">
-                                <!-- ЗАМОК БЕЗ ОТВЕРСТИЯ -->
                                 <svg class="lock-svg" viewBox="0 0 24 24">
-                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z" />
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
                                 </svg>
                             </div>
                             <canvas class="particles"></canvas>
                             <div class="relative z-0">
                                 <div class="w-full h-80 flex items-center justify-center">
-                                    <!-- ИСПРАВЛЕННАЯ ССЫЛКА НА КАРТИНКУ -->
-                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" 
-                                         alt="Скриншот проекта 9 circles of Hell" 
-                                         class="w-full h-full object-cover">
+                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" class="w-full h-full object-cover">
                                 </div>
                                 <div class="bg-white p-5 flex justify-between items-center">
                                     <div class="text-lg font-medium text-gray-900 tracking-custom-tight">9 circles of Hell</div>
@@ -353,31 +333,37 @@
                         </a>
                     </div>
 
-                    <!-- 5. Din Drone (LOCKED) -->
-                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element relative group">
-                        <div onclick="openLockedPopup('story')" class="portfolio-item bg-white shadow-xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl rounded-none relative">
-                             <div class="locked-overlay">
-                                <svg class="lock-icon text-black w-8 h-8 mb-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                <span class="text-xs font-medium text-black uppercase tracking-widest bg-white px-3 py-1">Узнать подробнее</span>
+                    <!-- 5. Din Drone (UNLOCKED + MAGIC) - ТЕПЕРЬ ОТКРЫТ -->
+                    <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
+                        <a href="dindrone.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
+                             <div class="overlay-panel">
+                                <svg class="lock-svg" viewBox="0 0 24 24">
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
+                                </svg>
                             </div>
-                            <div class="w-full h-80 flex items-center justify-center">
-                                <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" class="w-full h-full object-cover">
+                            <canvas class="particles"></canvas>
+                            <div class="relative z-0">
+                                <div class="w-full h-80 flex items-center justify-center">
+                                    <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" class="w-full h-full object-cover">
+                                </div>
+                                <div class="bg-white p-5 flex justify-between items-center">
+                                    <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Din Drone</div>
+                                    <div class="text-right text-xs text-gray-500 tracking-wider uppercase">UI Design / 3D</div>
+                                </div>
                             </div>
-                            <div class="bg-white p-5 flex justify-between items-center">
-                                <div class="text-lg font-medium text-gray-900 tracking-custom-tight">Din Drone</div>
-                                <div class="text-right text-xs text-gray-500 tracking-wider uppercase">UI Design / 3D</div>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     
                     <!-- 6. Turbofish (UNLOCKED + MAGIC) -->
                     <div class="project-card-wrapper reveal-on-scroll scroll-animated-element">
                          <a href="turbofish.html" class="magic-lock-wrapper portfolio-item bg-white shadow-xl relative block">
                              <div class="overlay-panel">
-                                <!-- ЗАМОК БЕЗ ОТВЕРСТИЯ -->
                                 <svg class="lock-svg" viewBox="0 0 24 24">
-                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z" />
+                                    <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    <path fill="#fff" d="M3 11h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V11z"/>
+                                    <circle cx="12" cy="16" r="1.5" fill="#151515"/>
                                 </svg>
                             </div>
                             <canvas class="particles"></canvas>
@@ -608,7 +594,7 @@
         popup.addEventListener('click', (e) => { if (e.target === popup) closePopup(); });
 
         // ===========================================
-        // === ОПТИМИЗИРОВАННАЯ МАГИЯ (ULTIMATE) ===
+        // === ОПТИМИЗИРОВАННАЯ МАГИЯ (MAGIC LOCK) ===
         // ===========================================
         (() => {
             const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -623,75 +609,57 @@
 
                 setTimeout(() => {
                     card.classList.add('unlocked');
-                }, 600); 
+                }, 400);
             }
 
-            function runMagicBurst(wrapper) {
-                const canvas = wrapper.querySelector('canvas.particles');
-                if (!canvas) return;
+            function runMagicBurst(card) {
+                const c = card.querySelector('canvas.particles');
+                if (!c) return;
                 
-                const ctx = canvas.getContext('2d', { willReadFrequently: false });
+                const ctx = c.getContext('2d', { willReadFrequently: false });
                 
-                // Размеры канваса
-                const rect = canvas.getBoundingClientRect();
-                canvas.width = rect.width * DPR;
-                canvas.height = rect.height * DPR;
+                // Размеры канваса (который в 200% от карточки)
+                const rect = c.getBoundingClientRect();
+                c.width = rect.width * DPR;
+                c.height = rect.height * DPR;
 
                 let particles = [];
-                // Флаг эмиссии (чтобы частицы создавались потоком, а не просто одним взрывом)
-                let isEmitting = true;
-                
-                // Прекращаем поток новых частиц через 1 секунду
-                setTimeout(() => { isEmitting = false; }, 1000);
+                // Центр карточки в координатах 200%-канваса находится в его центре (50% от 200%)
+                const cx = c.width / 2;
+                const cy = c.height / 2;
 
-                // Создаем функцию для генерации одной частицы
-                function createParticle(w, h, isExplosion = false) {
-                    const cx = w / 2;
-                    const cy = h / 2;
-                    
-                    // Убрали размытие и сложные эффекты
-                    let speedMult = (isExplosion ? 3.5 : 2) * DPR; 
+                const spreadFactor = 11 * DPR; // Слегка увеличенный разлет
+                const gravity = 0.1 * DPR;     // Меньшая гравитация для эффекта парения
+                const minDecay = 0.007;        // Очень медленное затухание (парение)
+                const maxDecay = 0.02;         // Медленное затухание
 
-                    return {
-                        x: cx + (Math.random() - 0.5) * 20 * DPR, 
-                        y: cy, 
-                        vx: (Math.random() - 0.5) * speedMult * 2, 
-                        vy: (Math.random() - 1.2) * speedMult * 2, 
-                        size: (Math.random() * 3 + 0.5) * DPR,
-                        alpha: 1, 
-                        decay: Math.random() * 0.02 + 0.005
-                    };
-                }
-
-                // Начальный взрыв
-                for (let i = 0; i < 60; i++) {
-                    particles.push(createParticle(canvas.width, canvas.height, true));
+                for (let i = 0; i < 45; i++) {
+                    particles.push({
+                        x: cx,
+                        y: cy,
+                        vx: (Math.random() - 0.5) * spreadFactor, 
+                        vy: (Math.random() * -1) * spreadFactor - 2 * DPR, 
+                        size: (Math.random() * 3 + 1.5) * DPR, 
+                        alpha: 1,
+                        decay: Math.random() * (maxDecay - minDecay) + minDecay 
+                    });
                 }
 
                 function animate() {
-                    if (particles.length === 0 && !isEmitting) {
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        return;
+                    if (particles.length === 0) {
+                        ctx.clearRect(0, 0, c.width, c.height);
+                        return; 
                     }
 
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    // Добавляем новые частицы пока идет эмиссия
-                    if (isEmitting) {
-                        particles.push(createParticle(canvas.width, canvas.height));
-                        particles.push(createParticle(canvas.width, canvas.height));
-                    }
-
-                    // Убрана сортировка и смена фильтров для производительности
+                    ctx.clearRect(0, 0, c.width, c.height);
                     ctx.fillStyle = '#fff';
-
+                    ctx.globalCompositeOperation = 'lighter'; // Эффект свечения
+                    
                     for (let i = 0; i < particles.length; i++) {
                         let p = particles[i];
-                        
                         p.x += p.vx;
                         p.y += p.vy;
-                        p.vx *= 0.96; // Трение воздуха
-                        p.vy *= 0.96; 
+                        p.vy += gravity; // Очень низкая гравитация
                         p.alpha -= p.decay;
 
                         if (p.alpha <= 0) {
@@ -700,58 +668,45 @@
                             continue;
                         }
 
-                        // Рисуем простой круг без теней и блюра
                         ctx.globalAlpha = p.alpha;
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                         ctx.fill();
                     }
                     
+                    ctx.globalCompositeOperation = 'source-over';
                     ctx.globalAlpha = 1;
+
                     requestAnimationFrame(animate);
                 }
                 
                 animate();
             }
 
-            // НОВАЯ ЛОГИКА: Проверка строго по скроллу
-            // Активируется только когда ВЕРХ карточки пересекает ЦЕНТР экрана
-            function checkScroll() {
-                const triggerLine = window.innerHeight / 2;
-                
-                document.querySelectorAll('.magic-lock-wrapper').forEach(card => {
-                    if (card.classList.contains('active')) return;
-
-                    const rect = card.getBoundingClientRect();
-                    
-                    // Если верхняя граница элемента достигла середины экрана (или выше)
-                    if (rect.top <= triggerLine) {
+            // НОВЫЙ IntersectionObserver для активации при прокрутке (для центрирования на экране)
+            const magicScrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const card = entry.target;
+                    // Активируем, как только элемент входит в центральную зону
+                    if (entry.isIntersecting) { 
                         activate(card);
+                        magicScrollObserver.unobserve(card); // Срабатывает один раз
                     }
                 });
-            }
-
-            // Используем requestAnimationFrame для оптимизации скролла
-            let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        checkScroll();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }, { passive: true });
-            
-            window.addEventListener('resize', checkScroll);
-            
-            // Запуск при загрузке
-            setTimeout(checkScroll, 100); 
-
-            // Оставляем ховер для десктопа
-            document.querySelectorAll('.magic-lock-wrapper').forEach(c => {
-                c.addEventListener('pointerenter', () => activate(c), { passive: true });
+            }, {
+                // ИЗМЕНЕНИЕ: rootMargin создает зону срабатывания только в центральных 20% экрана.
+                rootMargin: '-40% 0px -40% 0px', 
+                threshold: 0.01 // Почти сразу, как только элемент попадает в центральную зону
             });
+
+            document.querySelectorAll('.magic-lock-wrapper')
+                .forEach(c => {
+                    // 1. Активация по наведению (для десктопа)
+                    c.addEventListener('pointerenter', () => activate(c), { passive: true });
+                    
+                    // 2. Активация по скроллу (для всех устройств, включая мобильные)
+                    magicScrollObserver.observe(c);
+                });
         })();
 
         // === ГЛОБАЛЬНЫЙ ЗАПУСК ===
