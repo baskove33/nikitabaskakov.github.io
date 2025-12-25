@@ -4,8 +4,8 @@
  * и показывает их в блоке "Смотрите также".
  */
 
-// !!! ВАЖНО: Убедись, что файл на GitHub называется именно так (регистр важен!)
-// all_cases.html и All_Cases.html — это разные файлы.
+// !!! ВАЖНО: Убедись, что имя файла совпадает БУКВА В БУКВУ.
+// Если файл называется "All Cases.html", то писать нужно 'All%20Cases.html' или переименовать файл без пробелов.
 const CASES_PAGE_URL = 'all_cases.html'; 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,13 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Если на странице нет контейнера (мы не внутри кейса), ничего не делаем
     if (!container) return;
 
-    // Показываем статус загрузки (чтобы не было пустоты, пока грузится)
-    // container.innerHTML = '<p class="text-white/50 text-xs animate-pulse">Загрузка проектов...</p>';
+    // 1. Показываем статус загрузки, чтобы понимать, работает ли скрипт вообще
+    container.innerHTML = '<p class="text-white/50 text-xs animate-pulse">Поиск проектов в файле ' + CASES_PAGE_URL + '...</p>';
 
     fetch(CASES_PAGE_URL)
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Ошибка загрузки: Файл "${CASES_PAGE_URL}" не найден (код ${response.status}). Проверь имя файла.`);
+                // Если файл не найден, выбрасываем ошибку, чтобы показать её в catch
+                throw new Error(`Файл "${CASES_PAGE_URL}" не найден (Ошибка ${response.status}). Проверь название файла.`);
             }
             return response.text();
         })
@@ -28,12 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
 
-            // Ищем карточки. Если у тебя в all_cases.html другой класс (не .project-tile), скрипт не найдет их.
+            // Ищем карточки.
             const tiles = doc.querySelectorAll('.project-tile');
             
+            // 2. Если файл есть, но карточек нет — пишем об этом явно
             if (tiles.length === 0) {
-                console.warn('Скрипт загрузил файл, но не нашел ни одного элемента с классом .project-tile');
-                // container.innerHTML = '<p class="text-red-400 text-xs">Ошибка: В файле all_cases.html не найдены блоки с классом .project-tile</p>';
+                container.innerHTML = `
+                    <div class="text-red-400 text-sm border border-red-500/50 p-4 rounded bg-red-900/10">
+                        <p class="font-bold">Ошибка: Проекты не найдены.</p>
+                        <p class="mt-2 text-xs text-white/70">Скрипт успешно открыл файл <b>${CASES_PAGE_URL}</b>, но не нашел в нем ни одного элемента с классом <code>.project-tile</code>.</p>
+                        <p class="mt-1 text-xs text-white/70">Убедись, что в файле <b>${CASES_PAGE_URL}</b> у карточек (ссылок &lt;a&gt;) есть класс <code>class="project-tile"</code>.</p>
+                    </div>
+                `;
+                console.warn('Скрипт загрузил файл, но не нашел элементов .project-tile');
                 return;
             }
 
@@ -61,8 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => {
             console.error(err);
-            // Выводим ошибку прямо на экран, чтобы ты увидел
-            container.innerHTML = `<p class="text-red-500 text-sm border border-red-500 p-2 inline-block rounded">${err.message}</p>`;
+            // 3. Показываем любую ошибку (например, 404 или CORS)
+            container.innerHTML = `
+                <div class="text-red-400 text-sm border border-red-500/50 p-4 rounded bg-red-900/10">
+                    <p class="font-bold">Ошибка загрузки:</p>
+                    <p>${err.message}</p>
+                    <p class="mt-2 text-xs text-white/50">Убедись, что файл <b>${CASES_PAGE_URL}</b> лежит в той же папке и название написано правильно.</p>
+                </div>
+            `;
         });
 });
 
@@ -79,8 +93,7 @@ function renderRelatedProjects(allProjects, container) {
     container.innerHTML = ''; 
 
     if (finalProjects.length === 0) {
-        // Если проектов нет (или фильтр убрал всё), пишем об этом
-        container.innerHTML = '<p class="text-white/30 text-sm">Нет других проектов.</p>';
+        container.innerHTML = '<p class="text-white/30 text-sm">Проекты найдены, но все они были отфильтрованы (возможно, ссылки совпадают).</p>';
         return;
     }
 
