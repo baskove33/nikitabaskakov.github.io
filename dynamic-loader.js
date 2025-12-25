@@ -1,99 +1,113 @@
 /**
- * АВТОМАТИЗАЦИЯ
- * Скрипт заходит на страницу со всеми кейсами, считывает оттуда проекты
- * и показывает их в блоке "Смотрите также".
+ * ЕДИНЫЙ ЦЕНТР УПРАВЛЕНИЯ (Dynamic Loader)
+ * 1. Загружает проекты в "Смотрите также" со страницы all_cases.html.
+ * 2. Управляет кнопкой "Назад" в шапке (текст и действие).
  */
 
-// !!! ВАЖНО: Убедись, что имя файла совпадает БУКВА В БУКВУ.
-// Если файл называется "All Cases.html", то писать нужно 'All%20Cases.html' или переименовать файл без пробелов.
-const CASES_PAGE_URL = 'all_cases.html'; 
+const CONFIG = {
+    // 1. Настройки подгрузки проектов
+    // Укажи здесь точное имя файла, где лежит список всех работ (all_cases.html, index.html и т.д.)
+    sourceFile: 'all_cases.html', 
+    
+    // 2. Настройки кнопки в шапке
+    backButtonText: '← Назад',    // Текст, который будет на кнопке
+    
+    // ВАЖНО: Если true, кнопка работает как "История браузера" (возвращает туда, откуда пришел).
+    // Если false, она ведет на backButtonLink (например, index.html).
+    useBrowserBack: true,         
+    backButtonLink: 'index.html' // Игнорируется, если useBrowserBack: true
+};
 
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('related-projects');
+    // --- ЗАПУСК ФУНКЦИЙ ---
+    setupHeaderNavigation(); // Настраиваем кнопку в шапке
+    initRelatedProjects();   // Подгружаем проекты вниз
+});
+
+// === ЛОГИКА КНОПКИ В ШАПКЕ ===
+function setupHeaderNavigation() {
+    // Ищем ссылку внутри nav в header. 
+    // Обычно это <nav><a href="...">...</a></nav>
+    const navLink = document.querySelector('header nav a');
     
-    // Если на странице нет контейнера (мы не внутри кейса), ничего не делаем
-    if (!container) return;
+    if (navLink) {
+        // Меняем текст кнопки
+        navLink.textContent = CONFIG.backButtonText;
 
-    // 1. Показываем статус загрузки, чтобы понимать, работает ли скрипт вообще
-    container.innerHTML = '<p class="text-white/50 text-xs animate-pulse">Поиск проектов в файле ' + CASES_PAGE_URL + '...</p>';
+        if (CONFIG.useBrowserBack) {
+            // Режим "Назад в браузере"
+            navLink.href = '#'; // Чтобы не было перехода по умолчанию
+            navLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Если истории нет (человек открыл ссылку напрямую), можно отправлять на главную
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = CONFIG.backButtonLink;
+                }
+            });
+        } else {
+            // Режим "Ссылка на конкретную страницу"
+            navLink.href = CONFIG.backButtonLink;
+        }
+    }
+}
 
-    fetch(CASES_PAGE_URL)
+// === ЛОГИКА ПОДГРУЗКИ ПРОЕКТОВ ===
+function initRelatedProjects() {
+    const container = document.getElementById('related-projects');
+    if (!container) return; // Если блока нет (мы не на странице кейса), выходим
+
+    fetch(CONFIG.sourceFile)
         .then(response => {
-            if (!response.ok) {
-                // Если файл не найден, выбрасываем ошибку, чтобы показать её в catch
-                throw new Error(`Файл "${CASES_PAGE_URL}" не найден (Ошибка ${response.status}). Проверь название файла.`);
-            }
+            if (!response.ok) throw new Error(`Файл ${CONFIG.sourceFile} не найден`);
             return response.text();
         })
         .then(html => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
-
-            // Ищем карточки.
             const tiles = doc.querySelectorAll('.project-tile');
-            
-            // 2. Если файл есть, но карточек нет — пишем об этом явно
-            if (tiles.length === 0) {
-                container.innerHTML = `
-                    <div class="text-red-400 text-sm border border-red-500/50 p-4 rounded bg-red-900/10">
-                        <p class="font-bold">Ошибка: Проекты не найдены.</p>
-                        <p class="mt-2 text-xs text-white/70">Скрипт успешно открыл файл <b>${CASES_PAGE_URL}</b>, но не нашел в нем ни одного элемента с классом <code>.project-tile</code>.</p>
-                        <p class="mt-1 text-xs text-white/70">Убедись, что в файле <b>${CASES_PAGE_URL}</b> у карточек (ссылок &lt;a&gt;) есть класс <code>class="project-tile"</code>.</p>
-                    </div>
-                `;
-                console.warn('Скрипт загрузил файл, но не нашел элементов .project-tile');
-                return;
-            }
-
             const projects = [];
 
             tiles.forEach(tile => {
                 const link = tile.getAttribute('href');
                 const img = tile.querySelector('img')?.src;
-                
-                // Проверяем, есть ли заголовок с нужным классом
-                const titleEl = tile.querySelector('.text-xl'); 
-                const categoryEl = tile.querySelector('.text-xs');
+                // Ищем данные по классам Tailwind (проверь, что они совпадают с all_cases.html)
+                const title = tile.querySelector('.text-xl')?.innerText.trim();
+                const category = tile.querySelector('.text-xs')?.innerText.trim();
 
-                if (link && titleEl) {
-                    projects.push({ 
-                        title: titleEl.innerText.trim(), 
-                        category: categoryEl ? categoryEl.innerText.trim() : 'Design', 
-                        link, 
-                        img 
-                    });
+                if (link && title) {
+                    projects.push({ title, category, link, img });
                 }
             });
 
-            renderRelatedProjects(projects, container);
+            renderProjects(projects, container);
         })
         .catch(err => {
-            console.error(err);
-            // 3. Показываем любую ошибку (например, 404 или CORS)
-            container.innerHTML = `
-                <div class="text-red-400 text-sm border border-red-500/50 p-4 rounded bg-red-900/10">
-                    <p class="font-bold">Ошибка загрузки:</p>
-                    <p>${err.message}</p>
-                    <p class="mt-2 text-xs text-white/50">Убедись, что файл <b>${CASES_PAGE_URL}</b> лежит в той же папке и название написано правильно.</p>
-                </div>
-            `;
+            console.error('DynamicLoader Error:', err);
+            // Показываем ошибку на странице, чтобы было видно сразу
+            container.innerHTML = `<div class="col-span-full text-red-500 text-xs border border-red-500/30 p-4 rounded bg-red-900/10">
+                <p><b>Ошибка скрипта:</b> Не удалось загрузить проекты.</p>
+                <p class="opacity-70 mt-1">1. Проверь, что файл называется точно <b>${CONFIG.sourceFile}</b>.</p>
+                <p class="opacity-70">2. Если файл открыт просто так (file://), браузер блокирует это. Запусти через Live Server или залей на GitHub.</p>
+            </div>`;
         });
-});
+}
 
-function renderRelatedProjects(allProjects, container) {
+function renderProjects(allProjects, container) {
     const currentPath = window.location.pathname;
     const currentFile = currentPath.substring(currentPath.lastIndexOf('/') + 1) || currentPath;
 
-    // Фильтруем: убираем текущий проект
+    // Фильтруем: исключаем текущий проект из списка
     const projectsToShow = allProjects.filter(p => !currentFile.includes(p.link));
-
-    const limit = 5;
-    const finalProjects = projectsToShow.slice(0, limit);
+    
+    // Лимит: показываем первые 5 проектов
+    const finalProjects = projectsToShow.slice(0, 5);
 
     container.innerHTML = ''; 
 
     if (finalProjects.length === 0) {
-        container.innerHTML = '<p class="text-white/30 text-sm">Проекты найдены, но все они были отфильтрованы (возможно, ссылки совпадают).</p>';
+        container.innerHTML = '<div class="col-span-full text-white/30 text-sm">Нет других проектов для показа.</div>';
         return;
     }
 
@@ -112,6 +126,7 @@ function renderRelatedProjects(allProjects, container) {
         container.insertAdjacentHTML('beforeend', html);
     });
 
+    // Анимация появления карточек
     setTimeout(() => {
         container.querySelectorAll('.related-project-card').forEach(el => el.classList.add('opacity-100'));
     }, 100);
