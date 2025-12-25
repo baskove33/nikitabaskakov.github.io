@@ -173,12 +173,18 @@
         #lock-popup.active .popup-content {
             transform: scale(1);
         }
+        
+        /* Reveal Animation */
+        .reveal-on-scroll {
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
     </style>
 </head>
 <body class="bg-black text-white antialiased">
 
-    <!-- ПРЕЛОАДЕР -->
+    <!-- ПРЕЛОАДЕР (ДОЛЖЕН БЫТЬ ПЕРВЫМ ЭЛЕМЕНТОМ В BODY) -->
     <div id="preloader" class="opacity-100">
+        <!-- НОВЫЙ PULSE LOADER -->
         <div class="pulse-loader">
             <span></span>
             <span></span>
@@ -304,59 +310,13 @@
                 </p>
             </div>
             
-            <!-- НОВЫЙ БЛОК: Ссылки на другие проекты (ВСЕ ОТКРЫТЫ) -->
+            <!-- АВТОМАТИЧЕСКАЯ ПОДГРУЗКА ДРУГИХ ПРОЕКТОВ -->
             <div class="pt-10 reveal-on-scroll">
                 <h2 class="text-3xl font-medium tracking-custom-tight mb-5">Смотрите также другие проекты:</h2>
                 
+                <!-- ПУСТОЙ КОНТЕЙНЕР ДЛЯ СКРИПТА dynamic-loader.js -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5" id="related-projects">
-                    
-                    <!-- ОТКРЫТ: Nu i Che -->
-                    <a href="nuiche.html" data-project="nuiche" class="nav-link related-project-card">
-                         <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39518_rwxdzz.png" alt="Превью Nu i Che" class="w-full h-auto">
-                        <div class="p-4 text-left">
-                            <span class="text-lg font-medium tracking-custom-tight">Nu i Che</span>
-                            <p class="text-xs text-white/50">Web Design</p>
-                        </div>
-                    </a>
-
-                    <!-- ОТКРЫТ: Turbofish -->
-                    <a href="turbofish.html" data-project="turbofish" class="nav-link related-project-card">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39520_j4cgl1.png" alt="Превью Turbofish" class="w-full h-auto">
-                        <div class="p-4 text-left">
-                            <span class="text-lg font-medium tracking-custom-tight">Turbofish</span>
-                            <p class="text-xs text-white/50">UX Design / E-commerce</p>
-                        </div>
-                    </a>
-                    
-                    <!-- ОТКРЫТ: 9 circles of Hell -->
-                    <a href="circles.html" data-project="circles" class="nav-link related-project-card">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764843389/%D1%8B%D0%B0%D0%B2%D0%B0%D0%B0_ik42xy.png" alt="Превью 9 circles of Hell" class="w-full h-auto">
-                        <div class="p-4 text-left">
-                            <span class="text-lg font-medium tracking-custom-tight">9 circles of Hell</span>
-                            <p class="text-xs text-white/50">Longread</p>
-                        </div>
-                    </a>
-                    
-                    <!-- ОТКРЫТ: Din Drone -->
-                    <a href="dindrone.html" data-project="dindrone" class="nav-link related-project-card">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842241/Rectangle_39517_rwlir2.png" alt="Превью Din Drone" class="w-full h-auto">
-                        <div class="p-4 text-left">
-                            <span class="text-lg font-medium tracking-custom-tight">Din Drone</span>
-                            <p class="text-xs text-white/50">UI Design / 3D</p>
-                        </div>
-                    </a>
-
-                    <!-- ОТКРЫТ: DYOR 5 -->
-                    <a href="dyor5.html" data-project="dyor5" class="nav-link related-project-card">
-                        <img src="https://res.cloudinary.com/dt79npeea/image/upload/v1764842242/Rectangle_39524_y5ycpn.png" alt="Превью DYOR 5" class="w-full h-auto">
-                        <div class="p-4 text-left">
-                            <span class="text-lg font-medium tracking-custom-tight">DYOR 5</span>
-                            <p class="text-xs text-white/50">UI Design / Brand</p>
-                        </div>
-                    </a>
-                    
-                    <!-- Скрываем текущий Nobee -->
-                    <a href="nobee.html" data-project="nobee" class="current-project-link hidden"></a>
+                   <!-- Сюда dynamic-loader.js сам загрузит карточки из all_cases.html -->
                 </div>
             </div>
 
@@ -366,13 +326,18 @@
                     Хотите такой же мощный кейс для вашего бизнеса?
                 </p>
                 <a href="https://t.me/zorochik" target="_blank" class="block w-full max-w-sm mt-4">
+                    <!-- АНИМИРОВАННАЯ КНОПКА (Закругление = 0) -->
                     <button class="group relative w-full cursor-pointer overflow-hidden border border-white text-lg font-medium py-4 text-white shadow-xl transition duration-300 rounded-none hover:text-black">
+                        <!-- Base Text (Исходный текст, скрывается) -->
                         <span class="inline-block transition-all duration-300 group-hover:-translate-x-8 group-hover:opacity-0 z-20 relative">
                             Написать в Telegram
                         </span>
+                        <!-- Hover Background Fill (Эффект заливки) -->
                         <div class="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-none bg-white transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-white z-0"></div>
+                        <!-- Hover Content (Новый текст + стрелка, появляется) -->
                         <div class="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-black opacity-0 transition-all duration-300 group-hover:-translate-x-0 group-hover:opacity-100">
                             <span>Написать в Telegram</span>
+                            <!-- ArrowRight SVG (замена компонента Lucide) -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
                                 <path d="M5 12l14 0" />
                                 <path d="M15 16l4-4" />
@@ -380,28 +345,35 @@
                             </svg>
                         </div>
                     </button>
+                    <!-- /АНИМИРОВАННАЯ КНОПКА -->
                 </a>
             </div>
 
         </div>
     </main>
 
-    <!-- Скрипт -->
+    <!-- 1. ПОДКЛЮЧАЕМ СКРИПТ АВТОМАТИЗАЦИИ -->
+    <script src="dynamic-loader.js"></script>
+
+    <!-- 2. Скрипты страницы -->
     <script>
         // === ПРЕЛОАДЕР И ПЛАВНЫЕ ПЕРЕХОДЫ ===
         const preloader = document.getElementById('preloader');
 
+        // 1. Скрывает прелоадер после загрузки страницы
         function hidePreloader() {
             if (preloader) {
                 preloader.style.opacity = '0';
                 setTimeout(() => {
                     preloader.style.zIndex = '-1';
                     preloader.style.pointerEvents = 'none';
-                }, 500);
+                }, 500); // 500ms соответствует transition в CSS
             }
         }
 
+        // 2. Показывает прелоадер перед уходом со страницы
         function showPreloader(e) {
+            // Если это внешняя ссылка (target="_blank") или якорная ссылка на той же странице, не показываем прелоадер.
             const target = e.currentTarget;
             const href = target.getAttribute('href');
             
@@ -409,31 +381,20 @@
                 return;
             }
 
+            // Показываем прелоадер
             preloader.style.opacity = '1';
             preloader.style.zIndex = '9999';
             preloader.style.pointerEvents = 'all';
 
+            // Предотвращаем стандартный переход
             e.preventDefault();
 
+            // Ждем завершения анимации (500мс) и только потом переходим
             setTimeout(() => {
                 window.location.href = href;
             }, 500);
         }
 
-        // === ДИНАМИЧЕСКОЕ СКРЫТИЕ ===
-        function setupRelatedProjects() {
-            const path = window.location.pathname;
-            const currentFileName = path.split('/').pop(); 
-            const currentProjectSlug = currentFileName.replace('.html', ''); 
-
-            if (currentProjectSlug) {
-                const currentProjectLink = document.querySelector(`[data-project="${currentProjectSlug}"]`);
-                if (currentProjectLink) {
-                    currentProjectLink.classList.add('hidden');
-                }
-            }
-        }
-        
         // === POPUP LOGIC (Осталась для совместимости, но не используется) ===
         const popup = document.getElementById('lock-popup');
         
@@ -453,28 +414,30 @@
 
         // === ЗАПУСК ===
         document.addEventListener('DOMContentLoaded', () => {
-             // Observer для анимации
+            // Инициализация Intersection Observer для анимации появления элементов при скролле
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    const element = entry.target;
+
                     if (entry.isIntersecting) {
-                        entry.target.classList.remove('opacity-0', 'translate-y-4');
-                        entry.target.classList.add('opacity-100', 'translate-y-0');
-                        observer.unobserve(entry.target);
+                        element.classList.remove('opacity-0', 'translate-y-4');
+                        element.classList.add('opacity-100', 'translate-y-0');
+                        observer.unobserve(element);
                     }
                 });
-            }, { threshold: 0.1 });
+            }, {
+                threshold: 0.1 
+            });
 
-            // 1. Прелоадер на ссылки
+            // 1. Настраиваем прелоадер для всех внутренних ссылок
             document.querySelectorAll('a[href^="index.html"], a[href$=".html"]').forEach(link => {
+                // Исключаем ссылки на телеграм, которые открываются в новом окне
                 if (link.getAttribute('target') !== '_blank') {
                     link.addEventListener('click', showPreloader);
                 }
             });
             
-            // 2. Скрытие текущего проекта
-            setupRelatedProjects();
-            
-            // 3. Анимация появления
+            // 2. Настраиваем анимацию появления
             const revealElements = document.querySelectorAll('.reveal-on-scroll');
             revealElements.forEach(el => {
                 el.classList.add('opacity-0', 'translate-y-4', 'transition-all', 'duration-700', 'ease-out');
@@ -482,7 +445,10 @@
             });
         });
 
+        // 3. Скрываем прелоадер после полной загрузки страницы
         window.addEventListener('load', hidePreloader);
+        
+        // Дополнительная гарантия скрытия (на случай, если load не сработает быстро)
         setTimeout(hidePreloader, 3000); 
 
     </script>
