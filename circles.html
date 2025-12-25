@@ -20,7 +20,6 @@
         }
         @font-face {
             font-family: 'TT Neoris';
-            /* Если есть Medium, вставь ссылки сюда, иначе будет браться Regular */
             src: url('https://res.cloudinary.com/dt79npeea/raw/upload/v1764859192/TT_Neoris_Regular_bb9kfp.woff2') format('woff2');
             font-weight: 500;
             font-style: normal;
@@ -214,9 +213,9 @@
             <div class="pt-10 reveal-on-scroll">
                 <h2 class="text-3xl font-medium tracking-custom-tight mb-5">Смотрите также другие проекты:</h2>
                 
-                <!-- ПУСТОЙ КОНТЕЙНЕР ДЛЯ СКРИПТА projects.js -->
+                <!-- ПУСТОЙ КОНТЕЙНЕР ДЛЯ СКРИПТА dynamic-loader.js -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5" id="related-projects">
-                   <!-- Сюда projects.js сам загрузит карточки из all_cases.html -->
+                   <!-- Сюда dynamic-loader.js сам загрузит карточки из all_cases.html -->
                 </div>
             </div>
 
@@ -247,7 +246,7 @@
     </main>
 
     <!-- 1. ПОДКЛЮЧАЕМ СКРИПТ АВТОМАТИЗАЦИИ -->
-    <script src="projects.js"></script>
+    <script src="dynamic-loader.js"></script>
 
     <!-- 2. Скрипты страницы -->
     <script>
