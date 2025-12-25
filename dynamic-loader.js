@@ -1,78 +1,91 @@
 /**
  * ЕДИНЫЙ ЦЕНТР УПРАВЛЕНИЯ (Dynamic Loader)
- * 1. Загружает проекты в "Смотрите также" со страницы all_cases.html.
- * 2. Управляет кнопкой "Назад" в шапке (текст, действие и фикс зависания).
+ * 1. Загружает проекты.
+ * 2. Управляет кнопкой "Назад".
+ * 3. Чинит зависание прелоадера (черного экрана).
  */
 
 const CONFIG = {
-    // Укажи здесь точное имя файла, где лежит список всех работ
-    sourceFile: 'all_cases.html', 
-    
-    // Настройки кнопки в шапке
+    sourceFile: 'all_cases.html', // Имя файла с твоими кейсами
     backButtonText: '← Назад',
-    
-    // ВАЖНО: true = кнопка работает как "История браузера".
-    useBrowserBack: true,         
-    backButtonLink: 'index.html' // Резервная ссылка
+    useBrowserBack: true,         // Кнопка работает как "Назад" в браузере
+    backButtonLink: 'index.html'  // Куда идти, если истории нет
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    setupHeaderNavigation(); // Настраиваем кнопку в шапке
-    initRelatedProjects();   // Подгружаем проекты
-});
-
-// === ФИКС ЗАВИСАНИЯ ПРЕЛОАДЕРА (BFCache Fix) ===
-// Эта магия убирает черный экран, если ты вернулся на страницу кнопкой "Назад"
-window.addEventListener('pageshow', (event) => {
-    // event.persisted означает, что страница загружена из кэша (истории)
-    // Но мы на всякий случай убираем прелоадер всегда при показе страницы
+// === 1. ГЛАВНЫЙ ФИКС ЗАВИСАНИЯ (ЛЕКАРСТВО) ===
+// Этот код срабатывает КАЖДЫЙ раз, когда страница показывается пользователю
+// (даже если вытащена из "истории" кнопкой Назад)
+function forceHidePreloader() {
     const preloader = document.getElementById('preloader');
     if (preloader) {
         preloader.style.opacity = '0';
         setTimeout(() => {
             preloader.style.zIndex = '-1';
             preloader.style.pointerEvents = 'none';
-        }, 300);
+        }, 500); // Тайминг как в CSS
+    }
+}
+
+// Слушаем событие "pageshow" - это самый надежный способ поймать возврат назад
+window.addEventListener('pageshow', (event) => {
+    // Если страница загружена из кэша (bfcache) ИЛИ просто загружена
+    forceHidePreloader();
+});
+
+// На всякий случай запускаем и при обычной загрузке
+window.addEventListener('load', forceHidePreloader);
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Проверяем, где мы находимся
+    const isCasePage = document.getElementById('related-projects');
+
+    if (isCasePage) {
+        setupHeaderNavigation(); // Кнопка "Назад" только внутри кейсов
+        initRelatedProjects();   // Проекты только внутри кейсов
     }
 });
 
-// === ЛОГИКА КНОПКИ В ШАПКЕ ===
+// === ЛОГИКА КНОПКИ "НАЗАД" С АНИМАЦИЕЙ ===
 function setupHeaderNavigation() {
     const navLink = document.querySelector('header nav a');
     
     if (navLink) {
-        if (CONFIG.useBrowserBack) {
-            // Клонируем кнопку, чтобы УДАЛИТЬ все старые слушатели (в том числе прелоадер)
-            // Это гарантирует, что при нажатии "Назад" текущая страница не начнет затемняться
-            const newLink = navLink.cloneNode(true);
-            navLink.parentNode.replaceChild(newLink, navLink);
+        // Клонируем, чтобы убрать старые обработчики (чистый лист)
+        const newLink = navLink.cloneNode(true);
+        navLink.parentNode.replaceChild(newLink, navLink);
+        
+        newLink.textContent = CONFIG.backButtonText;
+        newLink.href = '#'; // Чтобы не было дефолтного перехода
+        
+        // Добавляем красивый переход с прелоадером
+        newLink.addEventListener('click', (e) => {
+            e.preventDefault();
             
-            newLink.textContent = CONFIG.backButtonText;
-            newLink.href = '#'; 
-            
-            newLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation(); // Останавливаем любые другие скрипты
-                
-                if (window.history.length > 1) {
+            // 1. Показываем прелоадер (Анимация ухода)
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.style.opacity = '1';
+                preloader.style.zIndex = '9999';
+                preloader.style.pointerEvents = 'all';
+            }
+
+            // 2. Ждем и переходим назад
+            setTimeout(() => {
+                if (CONFIG.useBrowserBack && window.history.length > 1) {
                     window.history.back();
                 } else {
-                    // Если истории нет, идем на главную
                     window.location.href = CONFIG.backButtonLink;
                 }
-            });
-        } else {
-            navLink.textContent = CONFIG.backButtonText;
-            navLink.href = CONFIG.backButtonLink;
-        }
+            }, 500); // Ждем пока экран станет черным
+        });
     }
 }
 
 // === ЛОГИКА ПОДГРУЗКИ ПРОЕКТОВ ===
 function initRelatedProjects() {
     const container = document.getElementById('related-projects');
-    if (!container) return; 
-
+    
     fetch(CONFIG.sourceFile)
         .then(response => {
             if (!response.ok) throw new Error(`Файл ${CONFIG.sourceFile} не найден`);
@@ -98,9 +111,9 @@ function initRelatedProjects() {
             renderProjects(projects, container);
         })
         .catch(err => {
-            console.error('DynamicLoader Error:', err);
+            console.error(err);
             container.innerHTML = `<div class="col-span-full text-red-500 text-xs border border-red-500/30 p-4 rounded">
-                Ошибка: Не удалось загрузить проекты. Проверь имя файла <b>${CONFIG.sourceFile}</b> и запусти через сервер.
+                Не удалось загрузить проекты. Проверь файл <b>${CONFIG.sourceFile}</b>.
             </div>`;
         });
 }
@@ -132,6 +145,28 @@ function renderProjects(allProjects, container) {
             </a>
         `;
         container.insertAdjacentHTML('beforeend', html);
+    });
+
+    // Добавляем слушатели клика на новые карточки для анимации
+    container.querySelectorAll('a.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Если это не открытие в новой вкладке
+            if (link.target !== '_blank') {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                const preloader = document.getElementById('preloader');
+                
+                if (preloader) {
+                    preloader.style.opacity = '1';
+                    preloader.style.zIndex = '9999';
+                    preloader.style.pointerEvents = 'all';
+                }
+
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 500);
+            }
+        });
     });
 
     setTimeout(() => {
