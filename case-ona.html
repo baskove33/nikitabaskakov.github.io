@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Студия массажа Ona - Кейс</title>
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Настройка шрифта Inter (резервный) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        /* TT Neoris */
+        @font-face {
+            font-family: 'TT Neoris';
+            src: url('https://res.cloudinary.com/dt79npeea/raw/upload/v1764859192/TT_Neoris_Regular_bb9kfp.woff2') format('woff2'),
+                 url('https://res.cloudinary.com/dt79npeea/raw/upload/v1764859114/TT_Neoris_Regular_mj4jee.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'TT Neoris';
+            src: url('https://res.cloudinary.com/dt79npeea/raw/upload/v1764859192/TT_Neoris_Regular_bb9kfp.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        /* CUSTOM TRACKING (-0.04em = -4%) */
+        .tracking-custom-tight {
+            letter-spacing: -0.04em;
+        }
+
+        body {
+            font-family: 'TT Neoris', 'Inter', sans-serif;
+            scroll-behavior: smooth; 
+        }
+        
+        /* Основной контейнер кейса */
+        .case-container {
+            max-width: 1200px;
+        }
+        
+        /* Заголовок кейса */
+        .case-title {
+            font-size: clamp(40px, 8vw, 56px);
+            line-height: 1.1;
+        }
+
+        /* ПРЕЛОАДЕР (PULSE LOADER) */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            opacity: 1;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .pulse-loader span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: pulse 1.2s infinite ease-in-out;
+        }
+
+        .pulse-loader span:nth-child(2) { animation-delay: 0.2s; }
+        .pulse-loader span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes pulse {
+            0%, 80%, 100% { opacity: 0.5; transform: scale(1); }
+            40% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Стили для карточек "Смотрите также" */
+        .related-project-card {
+            display: block;
+            background-color: #111;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .related-project-card:hover {
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Улучшенная плавность для Reveal */
+        .reveal-on-scroll {
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Плейсхолдер для отсутствующих картинок */
+        .img-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #171717; /* neutral-900 */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            width: 100%;
+            min-height: 500px; /* Высота заглушки */
+        }
+    </style>
+</head>
+<body class="bg-black text-white antialiased">
+
+    <!-- ПРЕЛОАДЕР -->
+    <div id="preloader" class="opacity-100">
+        <div class="pulse-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- Хедер и Навигация -->
+    <header class="bg-black sticky top-0 z-50 p-5 border-b border-white/10">
+        <div class="case-container mx-auto flex justify-between items-center tracking-custom-tight">
+            <a href="index.html" class="text-xl font-medium hover:text-white/80 transition duration-300">
+                Никита Баскаков
+            </a>
+            <nav>
+                <a href="index.html#portfolio-section" class="nav-link text-sm text-white/60 hover:text-white transition duration-300">
+                    ← К портфолио
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной контент кейса -->
+    <main class="py-12 px-4 sm:px-8">
+        <div class="case-container mx-auto space-y-12">
+
+            <!-- Заголовок и вводная часть -->
+            <div class="space-y-5 reveal-on-scroll">
+                <h1 class="case-title font-medium tracking-custom-tight">
+                    Студия массажа Ona
+                </h1>
+                <p class="text-xl text-white/80 max-w-4xl">
+                    Изначально задача заключалась в разработке Taplink, но я взял на себя инициативу и создал полноценный лендинг с продающей структурой, написанный на чистом коде.
+                </p>
+            </div>
+
+            <!-- Метрики -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 border-t border-b border-white/10 py-5 reveal-on-scroll">
+                <div>
+                    <p class="text-sm text-white/60 uppercase">Роль</p>
+                    <p class="text-lg font-medium">Fullstack (Дизайн + Код)</p>
+                </div>
+                <div>
+                    <p class="text-sm text-white/60 uppercase">Стек</p>
+                    <p class="text-lg font-medium">HTML, Tailwind CSS, JS</p>
+                </div>
+                <div>
+                    <p class="text-sm text-white/60 uppercase">Время реализации</p>
+                    <p class="text-lg font-medium">1 день</p>
+                </div>
+            </div>
+
+            <!-- БЛОК С КНОПКАМИ (ПЕРЕНЕСЕН СЮДА) -->
+            <div class="flex flex-col sm:flex-row gap-5 reveal-on-scroll">
+                
+                <!-- Кнопка 1: Сайт -->
+                <a href="https://onaface.github.io/ona/" target="_blank" class="block w-full sm:max-w-xs">
+                    <button class="group relative w-full cursor-pointer overflow-hidden border border-white text-lg font-medium py-4 text-white shadow-xl transition duration-300 rounded-none hover:text-black">
+                        <span class="inline-block transition-all duration-300 group-hover:-translate-x-8 group-hover:opacity-0 z-20 relative">
+                            Смотреть сайт
+                        </span>
+                        <div class="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-none bg-white transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-white z-0"></div>
+                        <div class="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-black opacity-0 transition-all duration-300 group-hover:-translate-x-0 group-hover:opacity-100">
+                            <span>Смотреть сайт</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                                <path d="M5 12l14 0" />
+                                <path d="M15 16l4-4" />
+                                <path d="M15 8l4 4" />
+                            </svg>
+                        </div>
+                    </button>
+                </a>
+
+                <!-- Кнопка 2: Таплинк -->
+                <a href="https://onaface.github.io/ona/ONA_Multilink.html" target="_blank" class="block w-full sm:max-w-xs">
+                    <button class="group relative w-full cursor-pointer overflow-hidden border border-white text-lg font-medium py-4 text-white shadow-xl transition duration-300 rounded-none hover:text-black">
+                        <span class="inline-block transition-all duration-300 group-hover:-translate-x-8 group-hover:opacity-0 z-20 relative">
+                            Смотреть Taplink
+                        </span>
+                        <div class="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-none bg-white transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-white z-0"></div>
+                        <div class="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-black opacity-0 transition-all duration-300 group-hover:-translate-x-0 group-hover:opacity-100">
+                            <span>Смотреть Taplink</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                                <path d="M5 12l14 0" />
+                                <path d="M15 16l4-4" />
+                                <path d="M15 8l4 4" />
+                            </svg>
+                        </div>
+                    </button>
+                </a>
+
+            </div>
+
+            <!-- Главный экран проекта (ОДНА ОБЛАСТЬ) -->
+            <div class="reveal-on-scroll">
+                <!-- ЗАМЕНИТЬ img-placeholder НА <img> КОГДА БУДУТ КАРТИНКИ -->
+                <div class="img-placeholder aspect-video">
+                    Основное изображение проекта
+                </div>
+            </div>
+
+            <!-- Описание процесса -->
+            <div class="grid grid-cols-1 gap-10 pt-5 reveal-on-scroll">
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-medium tracking-custom-tight mb-4">Детали реализации</h3>
+                        <p class="text-base text-white/80 leading-relaxed max-w-4xl mb-4">
+                            Вместо стандартного конструктора я предложил заказчику индивидуальное решение. Мною были спроектированы блоки, направленные на конверсию, и реализована верстка. 
+                        </p>
+                        <p class="text-base text-white/80 leading-relaxed max-w-4xl">
+                            В качестве бонуса я разработал стилизованную мультиссылку (Taplink) для социальных сетей студии. Весь проект был реализован <strong>всего за один день</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- БЛОК С ОТЗЫВОМ (НОВЫЙ) -->
+            <div class="py-16 border-t border-b border-white/10 reveal-on-scroll">
+                <div class="max-w-3xl mx-auto text-center space-y-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" class="mx-auto text-white/40">
+                        <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z"></path>
+                    </svg>
+                    
+                    <!-- ТЕКСТ ОТЗЫВА -->
+                    <blockquote class="text-2xl md:text-3xl font-medium leading-tight">
+                        "Большое спасибо Никите за отличную работу! Замечательный сайт, всё было сделано очень профессионально и в сроки. Я очень довольна результатом и рекомендую его как талантливого и ответственного специалиста."
+                    </blockquote>
+                    
+                    <div class="text-white/60">
+                        <p class="font-semibold text-white">aikaagness</p>
+                        <p class="text-sm">Студия массажа Ona</p>
+                    </div>
+
+                    <!-- КНОПКА ОТЗЫВА -->
+                    <a href="https://kwork.ru/user/baskove33" target="_blank" class="block w-full max-w-sm mx-auto mt-8">
+                        <button class="group relative w-full cursor-pointer overflow-hidden border border-white text-lg font-medium py-4 text-white shadow-xl transition duration-300 rounded-none hover:text-black">
+                            <span class="inline-block transition-all duration-300 group-hover:-translate-x-8 group-hover:opacity-0 z-20 relative">
+                                Читать отзыв на Kwork
+                            </span>
+                            <div class="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-none bg-white transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-white z-0"></div>
+                            <div class="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-black opacity-0 transition-all duration-300 group-hover:-translate-x-0 group-hover:opacity-100">
+                                <span>Перейти на Kwork</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                            </div>
+                        </button>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Ссылки на другие проекты (АВТОМАТИЗИРОВАНО) -->
+            <div class="pt-10 reveal-on-scroll">
+                <h2 class="text-3xl font-medium tracking-custom-tight mb-5">Смотрите также другие проекты:</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5" id="related-projects">
+                    <!-- Javascript заполнит это сам -->
+                </div>
+            </div>
+
+            <!-- CTA (Связь в Telegram) -->
+            <div class="pt-10 reveal-on-scroll">
+                <p class="text-xl font-medium text-white/80 tracking-custom-tight text-center">
+                    Хотите такой же быстрый и стильный сайт?
+                </p>
+                <a href="https://t.me/zorochik" target="_blank" class="block w-full max-w-sm mt-4 mx-auto">
+                    <button class="group relative w-full cursor-pointer overflow-hidden border border-white text-lg font-medium py-4 text-white shadow-xl transition duration-300 rounded-none hover:text-black">
+                        <span class="inline-block transition-all duration-300 group-hover:-translate-x-8 group-hover:opacity-0 z-20 relative">
+                            Написать в Telegram
+                        </span>
+                        <div class="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-none bg-white transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-white z-0"></div>
+                        <div class="absolute top-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-2 text-black opacity-0 transition-all duration-300 group-hover:-translate-x-0 group-hover:opacity-100">
+                            <span>Написать в Telegram</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                                <path d="M5 12l14 0" />
+                                <path d="M15 16l4-4" />
+                                <path d="M15 8l4 4" />
+                            </svg>
+                        </div>
+                    </button>
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 1. ПОДКЛЮЧЕНИЕ СКРИПТА АВТОМАТИЗАЦИИ -->
+    <script src="dynamic-loader.js"></script>
+
+    <!-- 2. СТАНДАРТНЫЙ СКРИПТ КЕЙСА -->
+    <script>
+        const preloader = document.getElementById('preloader');
+
+        function hidePreloader() {
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.zIndex = '-1';
+                    preloader.style.pointerEvents = 'none';
+                }, 500);
+            }
+        }
+
+        function showPreloader(e) {
+            const target = e.currentTarget;
+            const href = target.getAttribute('href');
+            
+            if (href && (href.startsWith('#') || target.getAttribute('target') === '_blank')) {
+                return;
+            }
+
+            preloader.style.opacity = '1';
+            preloader.style.zIndex = '9999';
+            preloader.style.pointerEvents = 'all';
+
+            e.preventDefault();
+            setTimeout(() => {
+                window.location.href = href;
+            }, 500);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const element = entry.target;
+                    if (entry.isIntersecting) {
+                        element.classList.remove('opacity-0', 'translate-y-4');
+                        element.classList.add('opacity-100', 'translate-y-0');
+                        observer.unobserve(element);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('a[href^="index.html"], a[href$=".html"]').forEach(link => {
+                if (link.getAttribute('target') !== '_blank') {
+                    link.addEventListener('click', showPreloader);
+                }
+            });
+            
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            revealElements.forEach(el => {
+                el.classList.add('opacity-0', 'translate-y-4');
+                observer.observe(el);
+            });
+        });
+
+        window.addEventListener('load', hidePreloader);
+        setTimeout(hidePreloader, 3000); 
+    </script>
+</body>
+</html>
