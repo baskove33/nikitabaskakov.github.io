@@ -198,10 +198,25 @@
             animation-play-state: paused;
         }
         
-        /* Маска градиента: "Рамки шире" — прозрачность только по самым краям (10%) */
+        /* Маска градиента: Увеличил зону перехода до 20% для мягкости */
         .mask-gradient-sides {
-            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+        }
+
+        /* === АНИМАЦИЯ ЦЕНЫ === */
+        .price-target {
+            display: inline-block; /* Чтобы работали трансформации */
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform, filter;
+        }
+        
+        .price-target.animating {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.95);
+            filter: blur(8px);
         }
     </style>
 </head>
@@ -415,70 +430,70 @@
                             <!-- КАРТОЧКА 1 -->
                             <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-bold text-white text-sm">zkurbanov85</span>
+                                    <span class="font-bold text-white text-base">zkurbanov85</span>
                                     <div class="flex text-white text-xs tracking-widest">★★★★★</div>
                                 </div>
-                                <p class="text-xs text-white/70 leading-relaxed font-light">Никита, благодарю Вас! ! Ваша терпеливая и вдумчивая работа позволила мне наконец заиметь свой таплинк. Буду обращаться вновь! !</p>
+                                <p class="text-sm text-white/70 leading-relaxed font-light">Никита, благодарю Вас! ! Ваша терпеливая и вдумчивая работа позволила мне наконец заиметь свой таплинк. Буду обращаться вновь! !</p>
                             </div>
                             
                             <!-- КАРТОЧКА 2 -->
                             <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-bold text-white text-sm">aikaagness</span>
+                                    <span class="font-bold text-white text-base">aikaagness</span>
                                     <div class="flex text-white text-xs tracking-widest">★★★★★</div>
                                 </div>
-                                <p class="text-xs text-white/70 leading-relaxed font-light">Большое спасибо Никите за отличную работу! замечательный сайт, всё было сделано очень профессионально и в сроки. Я очень довольна результатом.</p>
+                                <p class="text-sm text-white/70 leading-relaxed font-light">Большое спасибо Никите за отличную работу! замечательный сайт, всё было сделано очень профессионально и в сроки. Я очень довольна результатом.</p>
                             </div>
 
                             <!-- КАРТОЧКА 3 -->
                             <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-bold text-white text-sm truncate max-w-[120px]">TyapkinaProProdazhi</span>
+                                    <span class="font-bold text-white text-base truncate max-w-[120px]">TyapkinaProProdazhi</span>
                                     <div class="flex text-white text-xs tracking-widest">★★★★★</div>
                                 </div>
-                                <p class="text-xs text-white/60 leading-relaxed font-light">Очень довольна работой! Выполнено было все быстро, все по ТЗ. Использовал интересные подходы, всё предложенное было красиво, хорошо оформленно.</p>
+                                <p class="text-sm text-white/70 leading-relaxed font-light">Очень довольна работой! Выполнено было все быстро, все по ТЗ. Использовал интересные подходы, всё предложенное было красиво, хорошо оформленно.</p>
                             </div>
 
                             <!-- КАРТОЧКА 4 -->
                             <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-bold text-white text-sm">Yuristyuga</span>
+                                    <span class="font-bold text-white text-base">Yuristyuga</span>
                                     <div class="flex text-white text-xs tracking-widest">★★★★★</div>
                                 </div>
-                                <p class="text-xs text-white/60 leading-relaxed font-light">Огромная благодарность. Учтены все пожелания. Представил три варианта таплинка. Отвечает быстро. Работа выполнена в срок. Буду обращаться еще.</p>
+                                <p class="text-sm text-white/70 leading-relaxed font-light">Огромная благодарность. Учтены все пожелания. Представил три варианта таплинка. Отвечает быстро. Работа выполнена в срок. Буду обращаться еще.</p>
                             </div>
 
                             <!-- ДУБЛИКАТЫ (для бесконечности) -->
                             <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-bold text-white text-sm">zkurbanov85</span>
+                                    <span class="font-bold text-white text-base">zkurbanov85</span>
                                     <div class="flex text-white text-xs tracking-widest">★★★★★</div>
                                 </div>
-                                <p class="text-xs text-white/70 leading-relaxed font-light">Никита, благодарю Вас! ! Ваша терпеливая и вдумчивая работа позволила мне наконец заиметь свой таплинк. Буду обращаться вновь! !</p>
+                                <p class="text-sm text-white/70 leading-relaxed font-light">Никита, благодарю Вас! ! Ваша терпеливая и вдумчивая работа позволила мне наконец заиметь свой таплинк. Буду обращаться вновь! !</p>
                             </div>
                             
                             <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-bold text-white text-sm">aikaagness</span>
+                                    <span class="font-bold text-white text-base">aikaagness</span>
                                     <div class="flex text-white text-xs tracking-widest">★★★★★</div>
                                 </div>
-                                <p class="text-xs text-white/70 leading-relaxed font-light">Большое спасибо Никите за отличную работу! замечательный сайт, всё было сделано очень профессионально и в сроки. Я очень довольна результатом.</p>
+                                <p class="text-sm text-white/70 leading-relaxed font-light">Большое спасибо Никите за отличную работу! замечательный сайт, всё было сделано очень профессионально и в сроки. Я очень довольна результатом.</p>
                             </div>
 
                             <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-bold text-white text-sm truncate max-w-[120px]">TyapkinaProProdazhi</span>
+                                    <span class="font-bold text-white text-base truncate max-w-[120px]">TyapkinaProProdazhi</span>
                                     <div class="flex text-white text-xs tracking-widest">★★★★★</div>
                                 </div>
-                                <p class="text-xs text-white/70 leading-relaxed font-light">Очень довольна работой! Выполнено было все быстро, все по ТЗ. Использовал интересные подходы, всё предложенное было красиво, хорошо оформленно.</p>
+                                <p class="text-sm text-white/70 leading-relaxed font-light">Очень довольна работой! Выполнено было все быстро, все по ТЗ. Использовал интересные подходы, всё предложенное было красиво, хорошо оформленно.</p>
                             </div>
 
                             <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
                                 <div class="flex items-center justify-between mb-3">
-                                    <span class="font-bold text-white text-sm">Yuristyuga</span>
+                                    <span class="font-bold text-white text-base">Yuristyuga</span>
                                     <div class="flex text-white text-xs tracking-widest">★★★★★</div>
                                 </div>
-                                <p class="text-xs text-white/70 leading-relaxed font-light">Огромная благодарность. Учтены все пожелания. Представил три варианта таплинка. Отвечает быстро. Работа выполнена в срок. Буду обращаться еще.</p>
+                                <p class="text-sm text-white/70 leading-relaxed font-light">Огромная благодарность. Учтены все пожелания. Представил три варианта таплинка. Отвечает быстро. Работа выполнена в срок. Буду обращаться еще.</p>
                             </div>
 
                         </div>
@@ -590,35 +605,8 @@
 
         function updateCurrency(currency) {
             const targets = document.querySelectorAll('.price-target');
-            const rate = currencyRates[currency];
-            const symbol = currencySymbols[currency];
-
-            targets.forEach(el => {
-                // Получаем базовую цену в рублях
-                const baseRub = parseFloat(el.getAttribute('data-base-rub'));
-                const prefix = el.getAttribute('data-prefix') || '';
-                
-                let convertedValue;
-
-                if (currency === 'RUB') {
-                    convertedValue = baseRub;
-                } else if (currency === 'USD') {
-                    // Конвертация в USD: округление вверх до 10 (например, 468 -> 470)
-                    const rawValue = baseRub * rate;
-                    convertedValue = Math.ceil(rawValue / 10) * 10;
-                } else if (currency === 'KZT') {
-                    // Конвертация в KZT: округление вверх до 5000 (например, 293 850 -> 295 000)
-                    const rawValue = baseRub * rate;
-                    convertedValue = Math.ceil(rawValue / 5000) * 5000;
-                }
-                
-                // Форматирование (пробелы разрядов)
-                const formatted = convertedValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-                
-                el.textContent = `${prefix} ${formatted} ${symbol}`;
-            });
-
-            // Обновление стилей кнопок
+            
+            // Обновление стилей кнопок сразу
             document.querySelectorAll('.currency-btn').forEach(btn => {
                 if(btn.dataset.currency === currency) {
                     btn.classList.remove('text-white/40');
@@ -627,6 +615,43 @@
                     btn.classList.add('text-white/40');
                     btn.classList.remove('text-white');
                 }
+            });
+
+            const rate = currencyRates[currency];
+            const symbol = currencySymbols[currency];
+
+            targets.forEach(el => {
+                // 1. Запускаем анимацию исчезновения
+                el.classList.add('animating');
+
+                // 2. Ждем окончания анимации (300мс), меняем цифры и появляем обратно
+                setTimeout(() => {
+                    // Получаем базовую цену в рублях
+                    const baseRub = parseFloat(el.getAttribute('data-base-rub'));
+                    const prefix = el.getAttribute('data-prefix') || '';
+                    
+                    let convertedValue;
+
+                    if (currency === 'RUB') {
+                        convertedValue = baseRub;
+                    } else if (currency === 'USD') {
+                        // Конвертация в USD: округление вверх до 10 (например, 468 -> 470)
+                        const rawValue = baseRub * rate;
+                        convertedValue = Math.ceil(rawValue / 10) * 10;
+                    } else if (currency === 'KZT') {
+                        // Конвертация в KZT: округление вверх до 5000 (например, 293 850 -> 295 000)
+                        const rawValue = baseRub * rate;
+                        convertedValue = Math.ceil(rawValue / 5000) * 5000;
+                    }
+                    
+                    // Форматирование (пробелы разрядов)
+                    const formatted = convertedValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                    
+                    el.textContent = `${prefix} ${formatted} ${symbol}`;
+                    
+                    // Убираем класс анимации (плавное появление)
+                    el.classList.remove('animating');
+                }, 300); // Тайминг должен совпадать с CSS transition (0.3s)
             });
         }
 
