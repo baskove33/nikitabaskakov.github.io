@@ -183,6 +183,26 @@
             position: absolute; inset: -50%; width: 200%; height: 200%;
             pointer-events: none; z-index: 40;
         }
+
+        /* === БЕГУЩАЯ СТРОКА ОТЗЫВОВ С ГРАДИЕНТОМ === */
+        @keyframes infinite-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .animate-infinite-scroll {
+            animation: infinite-scroll 60s linear infinite;
+            width: max-content;
+            display: flex;
+        }
+        .animate-infinite-scroll:hover {
+            animation-play-state: paused;
+        }
+        
+        /* Маска градиента: "Рамки шире" — прозрачность только по самым краям (10%) */
+        .mask-gradient-sides {
+            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
     </style>
 </head>
 <body class="bg-black text-white antialiased">
@@ -386,10 +406,99 @@
                     </a>
                 </div>
 
-                <!-- Стоимость -->
-                <div id="pricing-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll">
-                    <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Стоимость</h2>
+                <!-- ОТЗЫВЫ (Бесконечная дорожка) -->
+                <div class="w-full overflow-hidden mb-5 reveal-on-scroll">
+                    <h3 class="text-2xl font-medium text-white mb-4 tracking-custom-tight sr-only">Отзывы</h3>
+                    <div class="w-full overflow-hidden mask-gradient-sides">
+                        <div class="animate-infinite-scroll">
+                            
+                            <!-- КАРТОЧКА 1 -->
+                            <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-bold text-white text-sm">zkurbanov85</span>
+                                    <div class="flex text-white text-xs tracking-widest">★★★★★</div>
+                                </div>
+                                <p class="text-xs text-white/70 leading-relaxed font-light">Никита, благодарю Вас! ! Ваша терпеливая и вдумчивая работа позволила мне наконец заиметь свой таплинк. Буду обращаться вновь! !</p>
+                            </div>
+                            
+                            <!-- КАРТОЧКА 2 -->
+                            <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-bold text-white text-sm">aikaagness</span>
+                                    <div class="flex text-white text-xs tracking-widest">★★★★★</div>
+                                </div>
+                                <p class="text-xs text-white/70 leading-relaxed font-light">Большое спасибо Никите за отличную работу! замечательный сайт, всё было сделано очень профессионально и в сроки. Я очень довольна результатом.</p>
+                            </div>
+
+                            <!-- КАРТОЧКА 3 -->
+                            <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-bold text-white text-sm truncate max-w-[120px]">TyapkinaProProdazhi</span>
+                                    <div class="flex text-white text-xs tracking-widest">★★★★★</div>
+                                </div>
+                                <p class="text-xs text-white/60 leading-relaxed font-light">Очень довольна работой! Выполнено было все быстро, все по ТЗ. Использовал интересные подходы, всё предложенное было красиво, хорошо оформленно.</p>
+                            </div>
+
+                            <!-- КАРТОЧКА 4 -->
+                            <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-bold text-white text-sm">Yuristyuga</span>
+                                    <div class="flex text-white text-xs tracking-widest">★★★★★</div>
+                                </div>
+                                <p class="text-xs text-white/60 leading-relaxed font-light">Огромная благодарность. Учтены все пожелания. Представил три варианта таплинка. Отвечает быстро. Работа выполнена в срок. Буду обращаться еще.</p>
+                            </div>
+
+                            <!-- ДУБЛИКАТЫ (для бесконечности) -->
+                            <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-bold text-white text-sm">zkurbanov85</span>
+                                    <div class="flex text-white text-xs tracking-widest">★★★★★</div>
+                                </div>
+                                <p class="text-xs text-white/70 leading-relaxed font-light">Никита, благодарю Вас! ! Ваша терпеливая и вдумчивая работа позволила мне наконец заиметь свой таплинк. Буду обращаться вновь! !</p>
+                            </div>
+                            
+                            <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-bold text-white text-sm">aikaagness</span>
+                                    <div class="flex text-white text-xs tracking-widest">★★★★★</div>
+                                </div>
+                                <p class="text-xs text-white/70 leading-relaxed font-light">Большое спасибо Никите за отличную работу! замечательный сайт, всё было сделано очень профессионально и в сроки. Я очень довольна результатом.</p>
+                            </div>
+
+                            <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-bold text-white text-sm truncate max-w-[120px]">TyapkinaProProdazhi</span>
+                                    <div class="flex text-white text-xs tracking-widest">★★★★★</div>
+                                </div>
+                                <p class="text-xs text-white/70 leading-relaxed font-light">Очень довольна работой! Выполнено было все быстро, все по ТЗ. Использовал интересные подходы, всё предложенное было красиво, хорошо оформленно.</p>
+                            </div>
+
+                            <div class="w-80 bg-black p-6 border border-white/20 flex-shrink-0 mx-3 hover:border-white/40 transition-colors rounded-none">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="font-bold text-white text-sm">Yuristyuga</span>
+                                    <div class="flex text-white text-xs tracking-widest">★★★★★</div>
+                                </div>
+                                <p class="text-xs text-white/70 leading-relaxed font-light">Огромная благодарность. Учтены все пожелания. Представил три варианта таплинка. Отвечает быстро. Работа выполнена в срок. Буду обращаться еще.</p>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Стоимость -->
+                <!-- Модифицированный заголовок с переключателем валют -->
+                <div id="pricing-section" class="pt-5 pb-5 scroll-mt-10 reveal-on-scroll flex items-end gap-4 flex-wrap">
+                    <h2 class="text-3xl sm:text-4xl font-medium text-white tracking-custom-tight">Стоимость</h2>
+                    <!-- Currency Switcher -->
+                    <div class="flex gap-2 text-sm font-medium mb-1.5 sm:mb-2" id="currency-switcher">
+                        <button class="currency-btn text-white transition-colors hover:opacity-80" onclick="updateCurrency('RUB')" data-currency="RUB">RUB</button>
+                        <span class="text-white/30">/</span>
+                        <button class="currency-btn text-white/40 hover:text-white transition-colors" onclick="updateCurrency('USD')" data-currency="USD">USD</button>
+                        <span class="text-white/30">/</span>
+                        <button class="currency-btn text-white/40 hover:text-white transition-colors" onclick="updateCurrency('KZT')" data-currency="KZT">KZT</button>
+                    </div>
+                </div>
+
                 <div class="space-y-5">
                     <div class="bg-white shadow-xl p-5 reveal-on-scroll">
                         <h3 class="text-2xl font-medium text-gray-900 mb-4 tracking-custom-tight">Дизайн сайта (Figma)</h3>
@@ -397,11 +506,11 @@
                         <div class="flex flex-col space-y-4">
                             <div class="bg-gray-100 p-4 flex justify-between items-center">
                                 <span class="text-sm text-gray-600">Лендинг</span>
-                                <span class="text-3xl font-medium text-gray-900"> $450</span>
+                                <span class="price-target text-2xl font-medium text-gray-900" data-base-rub="45000" data-prefix=""> 45 000 ₽</span>
                             </div>
                             <div class="bg-gray-100 p-4 flex justify-between items-center">
                                 <span class="text-sm text-gray-600">Многостраничный сайт</span>
-                                <span class="text-3xl font-medium text-gray-900"> $750</span>
+                                <span class="price-target text-2xl font-medium text-gray-900" data-base-rub="80000" data-prefix=""> 80 000 ₽</span>
                             </div>
                         </div>
                     </div>
@@ -411,11 +520,11 @@
                         <div class="flex flex-col space-y-4">
                             <div class="bg-gray-100 p-4 flex justify-between items-center">
                                 <span class="text-sm text-gray-600">Лендинг</span>
-                                <span class="text-3xl font-medium text-gray-900"> от $650</span>
+                                <span class="price-target text-2xl font-medium text-gray-900" data-base-rub="65000" data-prefix="от "> от 65 000 ₽</span>
                             </div>
                             <div class="bg-gray-100 p-4 flex justify-between items-center">
                                 <span class="text-sm text-gray-600">Многостраничный сайт</span>
-                                <span class="text-3xl font-medium text-gray-900"> от $900</span>
+                                <span class="price-target text-2xl font-medium text-gray-900" data-base-rub="90000" data-prefix="от "> от 90 000 ₽</span>
                             </div>
                         </div>
                     </div>
@@ -425,7 +534,8 @@
                         <div class="flex flex-col space-y-4">
                             <div class="bg-gray-100 p-4 flex justify-between items-center">
                                 <span class="text-sm text-gray-600">По договоренности</span>
-                                <span class="text-3xl font-medium text-gray-900"> от $50</span>
+                                <!-- Базовая цена для $50 (примерно 5000 рублей) -->
+                                <span class="price-target text-2xl font-medium text-gray-900" data-base-rub="5000" data-prefix="от "> от 5 000 ₽</span>
                             </div>
                         </div>
                     </div>
@@ -463,6 +573,61 @@
                 typingOutput.style.borderRight = 'none';
                 typingOutput.style.width = 'auto'; 
             }
+        }
+
+        // === ВАЛЮТНЫЙ КАЛЬКУЛЯТОР ===
+        // База всегда RUB
+        const currencyRates = {
+            RUB: 1,
+            USD: 1 / 78.25, // Актуальный курс: 1 USD = 78.25 RUB
+            KZT: 6.53       // Актуальный курс: 1 RUB = 6.53 KZT
+        };
+        const currencySymbols = {
+            RUB: '₽',
+            USD: '$',
+            KZT: '₸'
+        };
+
+        function updateCurrency(currency) {
+            const targets = document.querySelectorAll('.price-target');
+            const rate = currencyRates[currency];
+            const symbol = currencySymbols[currency];
+
+            targets.forEach(el => {
+                // Получаем базовую цену в рублях
+                const baseRub = parseFloat(el.getAttribute('data-base-rub'));
+                const prefix = el.getAttribute('data-prefix') || '';
+                
+                let convertedValue;
+
+                if (currency === 'RUB') {
+                    convertedValue = baseRub;
+                } else if (currency === 'USD') {
+                    // Конвертация в USD: округление вверх до 10 (например, 468 -> 470)
+                    const rawValue = baseRub * rate;
+                    convertedValue = Math.ceil(rawValue / 10) * 10;
+                } else if (currency === 'KZT') {
+                    // Конвертация в KZT: округление вверх до 5000 (например, 293 850 -> 295 000)
+                    const rawValue = baseRub * rate;
+                    convertedValue = Math.ceil(rawValue / 5000) * 5000;
+                }
+                
+                // Форматирование (пробелы разрядов)
+                const formatted = convertedValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                
+                el.textContent = `${prefix} ${formatted} ${symbol}`;
+            });
+
+            // Обновление стилей кнопок
+            document.querySelectorAll('.currency-btn').forEach(btn => {
+                if(btn.dataset.currency === currency) {
+                    btn.classList.remove('text-white/40');
+                    btn.classList.add('text-white');
+                } else {
+                    btn.classList.add('text-white/40');
+                    btn.classList.remove('text-white');
+                }
+            });
         }
 
         // === ПРЕЛОАДЕР И ПЛАВНЫЕ ПЕРЕХОДЫ ===
